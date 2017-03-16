@@ -1,6 +1,6 @@
 The format of training and test SVM data file is:
 
-<label> <index1>:<value1> <index2>:<value2> ...
+\<label\> \<index1\>:\<value1\> \<index2\>:\<value2\> ...
 .
 .
 .
