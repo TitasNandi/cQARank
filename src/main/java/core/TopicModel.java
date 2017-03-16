@@ -70,8 +70,8 @@ public class TopicModel {
 	        // Estimate the topic distribution of the first instance, 
 	        //  given the current Gibbs state.
 	        File keys = new File(input+"/top_words.txt");
-	        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(input+"/vectors.txt", false)));
-	        File infer = new File(input+"/dev_vectors.txt");
+	        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(input+"/train_vectors.txt", false)));
+	        File infer = new File(input+"/test_vectors.txt");
 	        
 	        System.out.println(model.getData().size());
 	        
@@ -90,7 +90,7 @@ public class TopicModel {
 	        writer.close();
 	        // Create a new instance named "test instance" with empty target and source fields.
 	        InstanceList testing = new InstanceList(instances.getPipe());
-	        BufferedReader fileReader2 = new BufferedReader(new FileReader(new File(input+"/topic_dev.txt")));
+	        BufferedReader fileReader2 = new BufferedReader(new FileReader(new File(input+"/topic_test.txt")));
 	        TopicInferencer inferencer = model.getInferencer();
 	        while((line = fileReader2.readLine()) != null)
 	        {

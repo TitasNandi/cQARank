@@ -15,27 +15,27 @@ public class QAMain
 {
 	public static void main(String[] args)
 	{
-		String resource_path = args[1]+"/scripts/";
-		//String resource_path = args[1]+"/scripts/";                               //path to resources directory
-//    	parsed_files(args[0], 0);
-//    	get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
-//    	string_similarity(get_parent(args[0])+"/parsed_files/");
+		String resource_path = args[1]+"/scripts/";                               //path to resources directory
+    	parsed_files(args[0], 0);
+    	get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
+    	string_similarity(get_parent(args[0])+"/parsed_files/");
     	//dialogue_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
-//    	embedding_trainer(args[0]);
-//		topic_file_creator(get_parent(args[0]), resource_path);
-//		topic_trainer(get_parent(args[0])+"/topic_files/");
-//    	embedding_writer(get_parent(args[0])+"/word2vec_files/", get_parent(args[0])+"/svm_files/");
-//    	meta_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");				//metadata features computation
-//		topic_writer(get_parent(args[0])+"/parsed_files/train_clean.txt", get_parent(args[0])+"/topic_files/vectors.txt", get_parent(args[0])+"/topic_files/top_words.txt", get_parent(args[0])+"/svm_files/train/topic_train.txt");
-//		topic_writer(get_parent(args[0])+"/parsed_files/dev_clean.txt", get_parent(args[0])+"/topic_files/dev_vectors.txt", get_parent(args[0])+"/topic_files/top_words.txt", get_parent(args[0])+"/svm_files/dev/topic_dev.txt");
-//		dependancy_features(get_parent(args[0]));
-//		stacking_features(get_parent(args[0]), get_parent(args[2])+"/result_files", get_parent(args[3])+"/result_files");
-//		multi_file_reader(get_parent(args[0])+"/svm_files/", get_parent(args[0])+"/parsed_files/");
-//		run_svm(get_parent(args[0])+"/svm_files/", get_parent(resource_path), 6);
-		threshold_fixer(get_parent(args[0])+"/result_files/");
-//		compute_scorer(get_parent(args[0]), resource_path);
+    	embedding_trainer(args[0], resource_path);
+		topic_file_creator(get_parent(args[0]), resource_path);
+		topic_trainer(get_parent(args[0])+"/topic_files/", resource_path);
+		topic_writer(get_parent(args[0]), get_parent(args[0])+"/svm_files/");
+    	embedding_writer(get_parent(args[0])+"/word2vec_files/", get_parent(args[0])+"/svm_files/");
+		//thread_testing(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
+    	meta_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");				//metadata features computation	
+		keyword_generator(get_parent(args[0]), resource_path);
+		//dependancy_features(get_parent(args[0]));
+		//stacking_features(get_parent(args[0]), get_parent(args[2])+"/result_files", get_parent(args[3])+"/result_files");
+		multi_file_reader(get_parent(args[0])+"/svm_files/", get_parent(args[0])+"/parsed_files/", 156);
+		run_svm(get_parent(args[0])+"/svm_files/", get_parent(resource_path), 6);
+		//threshold_fixer(get_parent(args[0])+"/result_files/");
+		compute_scorer(get_parent(args[0]), resource_path);
 		writer(get_parent(args[0]));
-//		get_scores(get_parent(args[0])+"/result_files/", resource_path);
+		get_scores(get_parent(args[0])+"/result_files/", resource_path);
 	}
 	/**
      * This method runs LIBLinear 
@@ -59,7 +59,7 @@ public class QAMain
     		builder.directory(new File(inp+"train/"));
     		Process p = builder.start();
     		p.waitFor();
-    		ProcessBuilder builder2 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/train/SVM_train.txt", inp+"/train/SVM_train.txt.model", pathgp+"/result_files/out_train.txt");
+    		ProcessBuilder builder2 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/test/SVM_test.txt", inp+"/train/SVM_train.txt.model", pathgp+"/result_files/out_test.txt");
     		Process p2 = builder2.start();
     		p2.waitFor();
     	} catch (Exception e) {
@@ -76,7 +76,7 @@ public class QAMain
     {
     	System.out.println("Computing scorer scripts......");
 		try {
-			Process p = (new ProcessBuilder("python",resource_path+"scorer_format.py",inp+"/parsed_files/dev_clean.txt",inp+"/result_files/scores_gold.txt")).start();
+			Process p = (new ProcessBuilder("python",resource_path+"scorer_format.py",inp+"/parsed_files/test_clean.txt",inp+"/result_files/scores_gold.txt")).start();
 			p.waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -86,11 +86,32 @@ public class QAMain
     public static void topic_file_creator(String inp, String resource_path)
     {
     	//System.out.println("Computing scorer scripts......");
+    	File inputFile = new File(inp);
+		String pathgp = inputFile.getAbsolutePath();
+		File dir = new File(pathgp+"/topic_files/");
+		boolean success = dir.mkdirs();
 		try {
 			Process p = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/train_clean.txt",inp+"/topic_files/topic_train.txt")).start();
 			p.waitFor();
-			Process p2 = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/dev_clean.txt",inp+"/topic_files/topic_dev.txt")).start();
+			Process p2 = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/test_clean.txt",inp+"/topic_files/topic_test.txt")).start();
 			p2.waitFor();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    public static void keyword_generator(String inp, String resource_path)
+    {
+    	System.out.println("Computing keyword features......");
+		try {
+			Process p = (new ProcessBuilder("python",resource_path+"keyword_extractor.py",inp+"/topic_files/topic_train.txt",inp+"/topic_files/keywords_train.txt",resource_path+"SmartStoplist.txt")).start();
+			p.waitFor();
+			Process p2 = (new ProcessBuilder("python",resource_path+"keyword_writer.py",inp+"/topic_files/keywords_train.txt",inp+"/parsed_files/train_clean.txt", inp+"/svm_files/train/keyword_train.txt")).start();
+			p2.waitFor();
+			Process p3 = (new ProcessBuilder("python",resource_path+"keyword_extractor.py",inp+"/topic_files/topic_test.txt",inp+"/topic_files/keywords_test.txt",resource_path+"SmartStoplist.txt")).start();
+			p3.waitFor();
+			Process p4 = (new ProcessBuilder("python",resource_path+"keyword_writer.py",inp+"/topic_files/keywords_test.txt",inp+"/parsed_files/test_clean.txt", inp+"/svm_files/test/keyword_test.txt")).start();
+			p4.waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -107,9 +128,9 @@ public class QAMain
     	StringSimilarity g = new StringSimilarity(inp);
     	g.initialize();
     }
-	public static void topic_writer(String inp, String inp1, String inp2, String out)
+	public static void topic_writer(String inp, String out)
     {
-    	TopicWriter t = new TopicWriter(inp, inp1, inp2, out);
+    	TopicWriter t = new TopicWriter(inp, out);
     	t.initialize();
     }
 	public static void dialogue_features(String inp, String out)
@@ -117,9 +138,9 @@ public class QAMain
     	DialogueFeatures f = new DialogueFeatures(inp, out);
     	f.initialize();
     }
-	public static void embedding_trainer(String inp)
+	public static void embedding_trainer(String inp, String inp2)
     {
-    	EmbeddingTrainer e = new EmbeddingTrainer(inp);
+    	EmbeddingTrainer e = new EmbeddingTrainer(inp, inp2);
     	e.initialize();
     }
 	public static void dependancy_features(String inp)
@@ -168,9 +189,9 @@ public class QAMain
      * @param inp1: The input directory
      * @param inp2: Another input directory
      */
-    public static void multi_file_reader(String inp, String inp2)
+    public static void multi_file_reader(String inp, String inp2, int num_features)
     {
-    	MultiFileReader mfr = new MultiFileReader(inp, inp2);
+    	MultiFileReader mfr = new MultiFileReader(inp, inp2, num_features);
     	mfr.initialize();
     }
 	/**
@@ -222,5 +243,10 @@ public class QAMain
     {
     	Writer w = new Writer(inp);
     	w.initialize();
+    }
+    public static void thread_testing(String inp, String out)
+    {
+    	ThreadTesting tt = new ThreadTesting(inp, out);
+    	tt.initialize();
     }
 }

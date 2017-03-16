@@ -20,9 +20,11 @@ public class EmbeddingTrainer
 {
 	static int size = 100;              //word vector dimension
 	static String input;
-	public EmbeddingTrainer(String inp)
+	static String input2;
+	public EmbeddingTrainer(String inp, String inp2)
 	{
 		input = inp;	
+		input2 = inp2;
 	}
 	/**
 	 * This method initializes computation
@@ -33,11 +35,16 @@ public class EmbeddingTrainer
 		File inputFile = new File(input);
 		File parent = inputFile.getParentFile();                        //get parent directory
 		String pathgp = parent.getAbsolutePath();
-		//EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/train_clean.txt", pathgp+"/Dependency_files/train/wtfidf/", pathgp+"/word2vec_files/train_idf_vectors.txt");
-		EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/dev_clean.txt", pathgp+"/Dependency_files/dev/wtfidf/", pathgp+"/word2vec_files/dev_idf_vectors.txt");
-		//EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/test_clean.txt", pathgp+"/word2vec_files/test_vectors.txt");
+		File dir = new File(pathgp+"/word2vec_files/");
+		boolean success = dir.mkdirs();
+		dir.setExecutable(true);
+		dir.setReadable(true);
+		dir.setWritable(true);
+		EmbeddingTrainerRun(input2+"/vectors_unannotated.txt", pathgp+"/parsed_files/train_clean.txt", pathgp+"/word2vec_files/train_vectors.txt");
+		//EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/dev_clean.txt", pathgp+"/Dependency_files/dev/wtfidf/", pathgp+"/word2vec_files/dev_idf_vectors.txt");
+		EmbeddingTrainerRun(input2+"/vectors_unannotated.txt", pathgp+"/parsed_files/test_clean.txt", pathgp+"/word2vec_files/test_vectors.txt");
 	}
-	public static void EmbeddingTrainerRun(String input1, String input2, String input3, String output1)
+	public static void EmbeddingTrainerRun(String input1, String input2, String output1)
 	{
 		File file = new File(input1);
 		BufferedReader reader = null;
@@ -54,7 +61,7 @@ public class EmbeddingTrainer
 					vector v = new vector(splited[1]);
 					map.put(word, v);
 				}
-				weighted_average(map, input2, input3, output1);          // generate sentence vectors from word vectors
+				sentence_vector(map, input2, output1);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

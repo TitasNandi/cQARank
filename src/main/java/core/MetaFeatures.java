@@ -37,7 +37,7 @@ public class MetaFeatures                                      //Meta Data Featu
 	}
 	public static void MetaFeaturesRun(String input, String output1)
 	{
-		double[] f = new double[5];
+		double[] f = new double[4];
 		File file = new File(input);
 		BufferedReader reader = null;
 		PrintWriter writer = null;
@@ -66,8 +66,7 @@ public class MetaFeatures                                      //Meta Data Featu
 							f[0] = (10-i)*1.0/10;
 							f[1] = special_word_matcher(ack, comment);
 							f[2] = special_word_matcher(ack2, comment);
-							f[3] = check_same(spl[0],"yes");
-							f[4] = spl.length;
+							f[3] = spl.length;
 							SVMWriter w = new SVMWriter(writer, label, 1, f);
 							w.write();
 						}

@@ -27,7 +27,7 @@ public class ThresholdFixer
 		dir.setExecutable(true);                             //set file permissions for files in new directory
 		dir.setReadable(true);
 		dir.setWritable(true);
-		ThresholdFixerRun(input+"/out.txt", input+"/threshold_files", 0.25, 0.75);
+		ThresholdFixerRun(input+"/out_oq_dev.txt", input+"/threshold_files", 0.25, 0.75);
 	}
 	public static void ThresholdFixerRun(String input, String output, double start, double end)
 	{

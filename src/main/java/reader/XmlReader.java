@@ -37,9 +37,9 @@ public class XmlReader
 			dir.setExecutable(true);
 			dir.setReadable(true);
 			dir.setWritable(true);
-			get_users(input+"/train.xml", pathgp+"/parsed_files/train.txt");
-			//get_users(input+"/dev.xml", pathgp+"/parsed_files/dev.txt");
-			get_users(input+"/test.xml", pathgp+"/parsed_files/test.txt");
+			parse(input+"/train.xml", pathgp+"/parsed_files/train.txt");
+			//parse(input+"/dev.xml", pathgp+"/parsed_files/dev.txt");
+			parse(input+"/test.xml", pathgp+"/parsed_files/test.txt");
 		}
 	}
 	/**
@@ -47,7 +47,7 @@ public class XmlReader
 	 * @param input: input file
 	 * @param output: output file
 	 */
-	public static void get_users(String input, String output)                     //get user information from XML file          
+	public static void parse(String input, String output)                     //get parsed output from XML file          
     {
 		File inputFile = new File(input);
 		SAXReader reader = new SAXReader();

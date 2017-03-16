@@ -24,14 +24,10 @@ public class TopicWriter
 	static double[] weights = new double[20];
 	static String[] topic_words = new String[20];
 	static String input;
-	static String input2;
-	static String input3;
 	static String output;
-	public TopicWriter(String inp, String inp2, String inp3, String out)
+	public TopicWriter(String inp, String out)
 	{
 		input = inp;	
-		input2 = inp2;
-		input3 = inp3;
 		output = out;
 	}
 	/**
@@ -40,7 +36,8 @@ public class TopicWriter
 	public static void initialize()
 	{
 		System.out.println("Computing topic features......");
-		TopicWriterRun(input, input2, input3, output);
+		TopicWriterRun(input+"/parsed_files/train_clean.txt", input+"/topic_files/train_vectors.txt", input+"/topic_files/top_words.txt", output+"/train/topic_train.txt");
+		TopicWriterRun(input+"/parsed_files/test_clean.txt", input+"/topic_files/test_vectors.txt", input+"/topic_files/top_words.txt", output+"/test/topic_test.txt");
 	}
 	public static void TopicWriterRun(String input, String input1, String input2, String output)
 	{

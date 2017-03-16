@@ -26,8 +26,8 @@ public class StackingFeatures
 	}
 	public static void initialize()
 	{
-		StackingFeaturesRun(input+"/parsed_files/dev_clean.txt", input2+"/out.txt", input3+"/out.txt", input+"/svm_files/dev/stacking_dev.txt");
-		StackingFeaturesRun(input+"/parsed_files/train_clean.txt", input2+"/out_train.txt", input3+"/out_train.txt", input+"/svm_files/train/stacking_train.txt");
+		StackingFeaturesRun(input+"/parsed_files/test_clean.txt", input2+"/out_test_stacking.txt", input3+"/out_test_stacking.txt", input+"/svm_files/test/stacking_test.txt");
+		//StackingFeaturesRun(input+"/parsed_files/train_clean.txt", input2+"/out_train_stacking.txt", input3+"/out_train_stacking.txt", input+"/svm_files/train/stacking_train.txt");
 	}
 	public static void StackingFeaturesRun(String input, String input2, String input3, String output)
 	{
@@ -79,13 +79,22 @@ public class StackingFeatures
 						sum += score_oc;
 					}
 					f[i++] = mse;
-					f[i++] = new PearsonsCorrelation().correlation(qc_arr,oc_arr);
+					double pearson = new PearsonsCorrelation().correlation(qc_arr,oc_arr);
+					if(Double.isNaN(pearson))
+						pearson = 0.0;
+					f[i++] = pearson;
 					f[i++] = agree;
 					f[i++] = pos;
 					f[i++] = max;
 					f[i++] = sum/10;
-					f[i++] = new SpearmansCorrelation().correlation(qc_arr,oc_arr);
-					f[i++] = new KendallsCorrelation().correlation(qc_arr,oc_arr);
+					double kendall = new KendallsCorrelation().correlation(qc_arr,oc_arr);
+					if(Double.isNaN(kendall))
+						kendall = 0.0;
+					f[i++] = kendall;
+					double spear = new SpearmansCorrelation().correlation(qc_arr,oc_arr);
+					if(Double.isNaN(spear))
+						spear = 0.0;
+					f[i++] = spear;
 					vector vec_qc = new vector(qc_arr);
 					vector vec_oc = new vector(oc_arr);
 					f[i++] = vec_qc.vector_cos(vec_qc, vec_oc);

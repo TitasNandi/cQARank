@@ -34,23 +34,8 @@ public class Writer
 	public static void initialize()
 	{
 		System.out.println("Computing final scores......");
-		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_rel_com.txt", input+"/result_files/results_rel_com.txt", input+"/result_files/error_rel_com.txt", 0);
-		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out@0.5.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
-		File dir = new File(input+"/result_files/threshold_files/");
-		File[] out_files = dir.listFiles();
-		for(int i=0; i<out_files.length; i++)
-		{
-			System.out.println(out_files[i].getName());
-			WriterRun(input+"/parsed_files/dev_clean.txt", out_files[i].getAbsolutePath(), input+"/result_files/threshold_files/results"+out_files[i].getName(), input+"/result_files/threshold_files/error"+out_files[i].getName());
-			oiso = 0;
-			zisz = 0;
-			oisz = 0;
-			ziso = 0;
-			good_count = 0;
-			bad_count = 0;
-			oisz_arr = new ArrayList<>();
-			ziso_arr = new ArrayList<>();
-		}
+		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_dev_all.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
+		WriterRun(input+"/parsed_files/test_clean.txt", input+"/result_files/out_test.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
 		//WriterCustom(input+"/parsed_files/test_clean.txt", input+"/result_files/out_new_qq_test.txt", input+"/result_files/weka_result_qq.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
 	}
 	public static void WriterRun(String inp1, String inp2, String out1, String out2)
@@ -105,7 +90,7 @@ public class Writer
 //						String[] spl = tax_score.split("\t");
 						double score = score1/(rel_rank);
 						comp_class(label, Double.parseDouble(l), c_id);
-						writer.println(q_id+" "+c_id+" 0 "+score+" "+bin_class);        //scorer script format
+						writer.println(q_id+"\t"+c_id+"\t"+rel_rank+"\t"+score+"\t"+bin_class);        //scorer script format
 					}
 				}
 				while((str = reader.readLine())!=null);

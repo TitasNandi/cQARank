@@ -29,9 +29,9 @@ public class EmbeddingWriter
 	public static void initialize()
 	{
 		System.out.println("Writing word embeddings to files......");
-		EmbeddingWriterRun(input+"/train_idf_vectors.txt", output+"/train/embeddingidf_train.txt");
-		EmbeddingWriterRun(input+"/dev_idf_vectors.txt", output+"/dev/embeddingidf_dev.txt");
-		//EmbeddingWriterRun(input+"/test_vectors.txt", output+"/test/embedding_test.txt");
+		EmbeddingWriterRun(input+"/train_vectors.txt", output+"/train/embedding_train.txt");
+		//EmbeddingWriterRun(input+"/dev_idf_vectors.txt", output+"/dev/embeddingidf_dev.txt");
+		EmbeddingWriterRun(input+"/test_vectors.txt", output+"/test/embedding_test.txt");
 	}
 	public static void EmbeddingWriterRun(String input, String output)
 	{
