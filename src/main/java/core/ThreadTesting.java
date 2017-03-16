@@ -55,8 +55,9 @@ public class ThreadTesting
 				do
 				{
 					String[] qs = q_id.split("\\s+");
+					int num = Integer.parseInt(qs[1]);
 					String question = reader.readLine();
-					for(int i=0; i<10; i++)
+					for(int i=0; i<num; i++)
 					{
 						String str = reader.readLine();
 						String[] splited = str.split("\\s+");

@@ -77,8 +77,11 @@ public class StringSimilarity         //File generating various string features
 				String str = reader.readLine();				
 				do
 				{
+					System.out.println(str);
+					String[] spl = str.split("\\s+");
+					int num = Integer.parseInt(spl[1]);
 					String question = reader.readLine();
-					for(int i=0; i<10; i++)
+					for(int i=0; i<num; i++)
 					{
 						str = reader.readLine();
 						String[] splited = str.split("\\s+");

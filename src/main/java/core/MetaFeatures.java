@@ -54,19 +54,20 @@ public class MetaFeatures                                      //Meta Data Featu
 				try {
 					while((line = reader.readLine()) != null)
 					{
-						String splited[] = line.split("\\s+", 3);
-						String quser = splited[1];
-						String qusername = splited[2].toLowerCase();
+						String splited[] = line.split("\\s+", 4);
+						int num = Integer.parseInt(splited[1]);
+						String quser = splited[2].toLowerCase();
+						//String qusername = splited[3].toLowerCase();
 						line = reader.readLine();
-						for(int i=0; i<10; i++)
+						for(int i=0; i<num; i++)
 						{
 							line = reader.readLine();
 							splited = line.split("\\s+", 4);
-							String cuser = splited[2];
+							String cuser = splited[2].toLowerCase();
 							String label = splited[1];
 							String comment = reader.readLine();
 							String[] spl = comment.split("\\s+");
-							f[0] = (10-i)*1.0/10;
+							f[0] = (num-i)*1.0/num;
 							f[1] = check_same(quser, cuser);
 							f[2] = special_word_matcher(ack, comment);
 							f[3] = special_word_matcher(ack2, comment);

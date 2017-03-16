@@ -29,6 +29,11 @@ public class DialogueFeatures
 		//DialogueFeaturesRun(input+"/dev_clean.txt", output+"/dev/dialog_dev.txt");
 		DialogueFeaturesRun(input+"/test_clean.txt", output+"/test/dialog_test.txt");
 	}
+	/**
+	 * This method computes Dialogue Features
+	 * @param input: input file
+	 * @param output: output feature file
+	 */
 	public static void DialogueFeaturesRun(String input, String output)
 	{
 		File file = new File(input);               //input file
@@ -45,16 +50,17 @@ public class DialogueFeatures
 				String line;
 				while((line = reader.readLine()) != null)
 				{
-					String splited[] = line.split("\\s+", 3);
-					String quser = splited[1];
-					String qusername = splited[2].toLowerCase();
+					String splited[] = line.split("\\s+", 4);
+					int num = Integer.parseInt(splited[1]);
+					String quser = splited[2];
+					String qusername = splited[3].toLowerCase();
 					ArrayList<String> users = new ArrayList<>();
 					ArrayList<String> labels = new ArrayList<>();
 					ArrayList<String> cid = new ArrayList<>();
 					ArrayList<String> comments = new ArrayList<>();
 					users.add(qusername);
 					line = reader.readLine();
-					for(int i=0; i<10; i++)
+					for(int i=0; i<num; i++)
 					{
 						line = reader.readLine();
 						splited = line.split("\\s+", 4);
@@ -93,7 +99,7 @@ public class DialogueFeatures
 			for(String value : map)
 			{
 				String[] splited;
-				if(value.contains("-") || value.contains("_") || value.contains(" "))
+				if(value.contains("-") || value.contains("_") || value.contains(" "))             //identify different parts of the name
 					splited = value.split("[-_\\s+]");
 				else
 					splited = value.split("((?<=[a-zA-Z])(?=[0-9]))|((?<=[0-9])(?=[a-zA-Z]))");
@@ -105,9 +111,9 @@ public class DialogueFeatures
 				{
 					for(String phrases: splited)
 					{
-						if(words.equalsIgnoreCase(phrases))
+						if(words.equalsIgnoreCase(phrases))                   //match found
 						{
-							val = 1.0;
+							val = 1.0;               
 							break;
 						}
 					}

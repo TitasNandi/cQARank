@@ -19,9 +19,11 @@ public class EmbeddingTrainer
 {
 	static int size = 100;              //word vector dimension
 	static String input;
-	public EmbeddingTrainer(String inp)
+	static String input2;
+	public EmbeddingTrainer(String inp, String inp2)
 	{
 		input = inp;	
+		input2 = inp2;
 	}
 	/**
 	 * This method initializes computation
@@ -32,11 +34,16 @@ public class EmbeddingTrainer
 		File inputFile = new File(input);
 		File parent = inputFile.getParentFile();                        //get parent directory
 		String pathgp = parent.getAbsolutePath();
-		EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/train_clean.txt", pathgp+"/Dependency_files/train/wtfidf/", pathgp+"/word2vec_files/train_idf_vectors.txt");
-		//EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/dev_clean.txt", pathgp+"/Dependency_files/dev/wtfidf/", pathgp+"/word2vec_files/dev_idf_vectors.txt");
-		//EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/test_clean.txt", pathgp+"/word2vec_files/test_vectors.txt");
+		File dir = new File(pathgp+"/word2vec_files/");
+		boolean success = dir.mkdirs();
+		dir.setExecutable(true);
+		dir.setReadable(true);
+		dir.setWritable(true);
+		EmbeddingTrainerRun(input2+"/vectors_unannotated.txt", pathgp+"/parsed_files/train_clean.txt", pathgp+"/word2vec_files/train_vectors.txt");
+		EmbeddingTrainerRun(input2+"/vectors_unannotated.txt", pathgp+"/parsed_files/test_clean.txt", pathgp+"/word2vec_files/test_vectors.txt");
+		//EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/dev_clean.txt", pathgp+"/word2vec_files/dev_idf_vectors.txt");
 	}
-	public static void EmbeddingTrainerRun(String input1, String input2, String input3, String output1)
+	public static void EmbeddingTrainerRun(String input1, String input2, String output1)
 	{
 		File file = new File(input1);
 		BufferedReader reader = null;
@@ -50,10 +57,10 @@ public class EmbeddingTrainer
 				{
 					String splited[] = l.split("\\s+", 2);
 					String word = splited[0];
-					vector v = new vector(splited[1]);
+					vector v = new vector(splited[1], 0);
 					map.put(word, v);
 				}
-				weighted_average(map, input2, input3, output1);          // generate sentence vectors from word vectors
+				sentence_vector(map, input2, output1);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -91,9 +98,9 @@ public class EmbeddingTrainer
 				String[] str = rquestion.split("\\s+");
 				String[] splited = qid.split("\\s+");
 				String q_id = splited[0];
-				System.out.println(q_id);
-				calculate_avg(writer, str, map, q_id);
-				for(int j=0; j<10; j++)
+				int num = Integer.parseInt(splited[1]);
+				calculate_avg(writer, str, map, q_id+" "+num);
+				for(int j=0; j<num; j++)
 				{
 					String cid = reader.readLine();
 					splited = cid.split("\\s+");
@@ -138,6 +145,13 @@ public class EmbeddingTrainer
 		}
 		return sum;
 	}
+	/**
+	 * This method computes sentence vectors from word vectors and writes to a file
+	 * @param writer: PrintWriter
+	 * @param str: comment
+	 * @param map: Map of word vectors
+	 * @param init: extra metadata
+	 */
 	public static void calculate_avg(PrintWriter writer, String[] str, HashMap<String, vector> map, String init)         //calculate average of word vectors
 	{
 		writer.print(init+" ");
@@ -169,6 +183,14 @@ public class EmbeddingTrainer
 		}
 		writer.println();
 	}
+	/**
+	 * This method computes idf weighted sentence vectors
+	 * @param writer: PrintWriter object
+	 * @param str: comment
+	 * @param map: the map of word vectors
+	 * @param idf_map: the map of respective idf values
+	 * @param init: extra metadata
+	 */
 	public static void calculate_weighted_avg(PrintWriter writer, String[] str, HashMap<String, vector> map, HashMap<String, Double> idf_map, String init)         //calculate average of word vectors
 	{
 		writer.print(init+" ");
@@ -203,6 +225,13 @@ public class EmbeddingTrainer
 		}
 		writer.println();
 	}
+	/**
+	 * This method reads idf values from a directory and computes sentence vectors
+	 * @param map: the map of word vectors
+	 * @param fread: reader object
+	 * @param idf_dir: directory of idf valued files
+	 * @param fwrite1: filewriter
+	 */
 	public static void weighted_average(HashMap<String, vector> map, String fread, String idf_dir, String fwrite1)
 	{
 		File file = new File(fread);
@@ -253,6 +282,11 @@ public class EmbeddingTrainer
 				e.printStackTrace();
 			}
 	}
+	/**
+	 * This file creates a map of idf values
+	 * @param filename: file containing idf values
+	 * @return map
+	 */
 	public static HashMap<String, Double> get_idf_map(String filename)
 	{
 		File file = new File(filename);
@@ -280,9 +314,13 @@ public class EmbeddingTrainer
 class vector                                                                 //vector class
 {
 	double[] vec;
-	public vector(String s)
+	public vector(String s, int flag)
 	{
-		String[] str = s.split("\\s+");
+		String[] str;
+		if(flag == 0)
+			str = s.split("\\s+");
+		else
+			str = s.split("\t");
 		vec = new double[str.length];
 		for(int i=0; i<str.length; i++)
 		{

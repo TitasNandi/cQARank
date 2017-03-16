@@ -45,19 +45,18 @@ public class TopicModel {
 	        ArrayList<String> ids = new ArrayList<>();
 	        while((line = fileReader.readLine()) != null)
 	        {
-	        	//System.out.println(line);
+	        	System.out.println(line);
 	        	String[] spl = line.split("\t");
 	        	if(spl.length == 1)
 	        	{
-	        		instances.addThruPipe(new Instance("", null, spl[0], null));
+	        		instances.addThruPipe(new Instance("", null, spl[0], null));           //add instances to pipe
 		        	ids.add(spl[0]);
 		        	continue;
 	        	}
 	        	instances.addThruPipe(new Instance(spl[1], null, spl[0], null));
 	        	ids.add(spl[0]);
 	        }
-	        //  Note that the first parameter is passed as the sum over topics, while
-	        //  the second is the parameter for a single dimension of the Dirichlet prior.
+	        
 	        int numTopics = 20;
 	        ParallelTopicModel model = new ParallelTopicModel(numTopics);
 	
@@ -67,27 +66,23 @@ public class TopicModel {
 	        //  statistics after every iteration.
 	        model.setNumThreads(2);
 	
-	        // Run the model for 50 iterations and stop (this is for testing only, 
-	        //  for real applications, use 1000 to 2000 iterations)
+	        // Run the model for 1000 iterations and stop
 	        model.setNumIterations(1000);
 	        model.estimate();
 	
-	        // Show the words and topics in the first instance
 	        
-	        // Estimate the topic distribution of the first instance, 
-	        //  given the current Gibbs state.
-	        File keys = new File(input+"/top_words.txt");
-	        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(input+"/vectors.txt", false)));
-	        File infer = new File(input+"/dev_vectors.txt");
-	        
-	        System.out.println(model.getData().size());
+	        File keys = new File(input+"/top_words.txt");                                           //write the most probable topic words
+	        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(input+"/train_vectors.txt", false)));     
+	        File infer = new File(input+"/test_vectors.txt");                                              //create file to write test vectors
+//	        
+	        //System.out.println(model.getData().size());
 	        
 	        model.printTopWords(keys, 50, false);
 	        writer.println("Topic Proportions:");
 	        for(int j=0; j<model.getData().size(); j++)
 	        {
 	        	writer.print(j+"\t"+ids.get(j)+"\t");
-		        double[] topicDistribution = model.getTopicProbabilities(j);
+		        double[] topicDistribution = model.getTopicProbabilities(j);                            //write topic vectors for training set
 		        for(int i=0; i<topicDistribution.length; i++)
 		        {
 		        	writer.print(topicDistribution[i]+"\t");
@@ -97,7 +92,7 @@ public class TopicModel {
 	        writer.close();
 	        // Create a new instance named "test instance" with empty target and source fields.
 	        InstanceList testing = new InstanceList(instances.getPipe());
-	        BufferedReader fileReader2 = new BufferedReader(new FileReader(new File(input+"/topic_dev.txt")));
+	        BufferedReader fileReader2 = new BufferedReader(new FileReader(new File(input+"/topic_test.txt")));
 	        TopicInferencer inferencer = model.getInferencer();
 	        while((line = fileReader2.readLine()) != null)
 	        {
@@ -110,7 +105,7 @@ public class TopicModel {
 	        	}
 	        	testing.addThruPipe(new Instance(spl[1], null, spl[0], null));
 	        }
-	        inferencer.writeInferredDistributions(testing, infer, 100, 10, 10, 0.0, 20);
+	        inferencer.writeInferredDistributions(testing, infer, 100, 10, 10, 0.0, 20);               //write inferenced topic vectors for test set
         
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

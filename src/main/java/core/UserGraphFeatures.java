@@ -17,28 +17,34 @@ import writer.SVMWriter;
 public class UserGraphFeatures 
 {
 	static String input;
+	static String input2;
 	static double[] f = new double[1];
 	static HashMap<String, vector> embedding_map = new HashMap<>();    //HashMap to store vectors for each word
-	public UserGraphFeatures(String inp)
+	public UserGraphFeatures(String inp, String inp2)
 	{
 		input = inp;
+		input2 = inp2;
 	}
-	
+	/**
+	 * This method computes user features from user interaction graph
+	 */
 	public void initialize()
 	{
-		//GraphFeatures(input+"/parsed_files/dev_clean.txt", input+"/topic_files/keywords_rel_com_dev.txt", input+"/svm_files/train/dialog_train.txt", input+"/word2vec_files/vectors_unannotated.txt", input+"/svm_files/dev/user_dev.txt");
-		GraphFeatures(input+"/parsed_files/train_clean.txt", input+"/topic_files/keywords_rel_com.txt", input+"/svm_files/train/dialog_train.txt", input+"/word2vec_files/vectors_unannotated.txt", input+"/svm_files/train/user_train.txt");
-		GraphFeatures(input+"/parsed_files/test_clean.txt", input+"/topic_files/keywords_rel_com.txt", input+"/svm_files/test/dialog_test.txt", input+"/word2vec_files/vectors_unannotated.txt", input+"/svm_files/test/user_test.txt");
+		//GraphFeatures(input+"/parsed_files/dev_clean.txt", input+"/topic_files/keywords_dev.txt", input+"/svm_files/dev/dialog_dev.txt", input+"/word2vec_files/vectors_unannotated.txt", input+"/svm_files/dev/user_dev.txt");
+		GraphFeatures(input+"/parsed_files/train_clean.txt", input+"/topic_files/keywords_train.txt", input+"/svm_files/train/dialog_train.txt", input2+"/vectors_unannotated.txt", input+"/topic_files/train_vectors.txt", input+"/svm_files/train/user_train.txt");
+		GraphFeatures(input+"/parsed_files/test_clean.txt", input+"/topic_files/keywords_test.txt", input+"/svm_files/test/dialog_test.txt", input2+"/vectors_unannotated.txt",  input+"/topic_files/test_vectors.txt", input+"/svm_files/test/user_test.txt");
 	}
 	
-	public static void GraphFeatures(String input1, String input2, String input3, String input4, String output)
+	public static void GraphFeatures(String input1, String input2, String input3, String input4, String input5, String output)
 	{
 		File file = new File(input1);
 		File file_2 = new File(input2);
 		File file_3 = new File(input3);
+		File file_4 = new File(input5);
 		BufferedReader reader = null;
 		BufferedReader reader_2 = null;
 		BufferedReader reader_3 = null;
+		BufferedReader reader_4 = null;
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(output, false)));
@@ -50,25 +56,32 @@ public class UserGraphFeatures
 			reader = new BufferedReader(new FileReader(file));
 			reader_2 = new BufferedReader(new FileReader(file_2));
 			reader_3 = new BufferedReader(new FileReader(file_3));
-			embedding_map(input4);
+			reader_4 = new BufferedReader(new FileReader(file_4));
+			embedding_map(input4);                                   //create hashmap of word vectors
 			String line;
+			String topic_line;
 			try {
+				topic_line = reader_4.readLine();
 				while((line = reader.readLine()) != null)
 				{
 					HashMap<String, HashMap<String, Double>> map = new HashMap<>();
 					ArrayList<String> id_list = new ArrayList<>();
 					ArrayList<String> comments = new ArrayList<>();
 					ArrayList<String> usernames = new ArrayList<>();
-					String[] splited = line.split("\\s+", 3);
+					ArrayList<String> topic_vec = new ArrayList<>();
+					String[] splited = line.split("\\s+", 4);
 					String qid = splited[0];
-					String user = splited[1];
+					int num = Integer.parseInt(splited[1]);
+					String user = splited[2];
 					id_list.add(qid);
-					String username = splited[2];
+					String username = splited[3].toLowerCase();
 					String question = reader.readLine();
 					usernames.add(username);
 					String kque = reader_2.readLine();
 					comments.add(kque);
-					for(int i=0; i<10; i++)
+					topic_line = reader_4.readLine();
+					topic_vec.add(topic_line);
+					for(int i=0; i<num; i++)
 					{
 						String cid = reader.readLine();
 						splited = cid.split("\\s+", 4);
@@ -76,18 +89,23 @@ public class UserGraphFeatures
 						int exp = name_dialog(usernames, comment);
 						usernames.add(splited[3]);
 						String kcom = reader_2.readLine();
+						topic_line = reader_4.readLine();
+						String[] spl = topic_line.split("\t", 3);
+						vector first_vec = new vector(spl[2], 1);
 						HashMap<String, Double> submap = new HashMap<>();
 						for(int j=0; j<id_list.size(); j++)
 						{
 							double exp_score = 0.0;
-							double tr_score = translation(comments.get(j), kcom);
+							double tr_score = translation(comments.get(j), kcom);      //compute the translation score
+							spl = topic_vec.get(j).split("\t", 3);
+							vector second_vec = new vector(spl[2], 1);
+							double to_score = vector_cos(first_vec, second_vec);      //compute topic score
 							if(exp == j)
-								exp_score = 1.0;
-							//writer.println(splited[0]+" "+id_list.get(j)+" "+(tr_score+exp_score));
-							submap.put(id_list.get(j), tr_score+exp_score);
+								exp_score = 1.0;                                      //compute explicit dialogue score
+							//writer.println(splited[0]+" "+id_list.get(j)+" "+tr_score+" "+exp_score+" "+to_score);
+							submap.put(id_list.get(j), tr_score+exp_score+to_score);     //generate interaction score between two users
 						}
 						map.put(splited[0], submap);
-						//f[0] = submap.get(qid);
 						double maxValueInMap=(Collections.max(submap.values()));  // This will return max value in the Hashmap
 				        for (Entry<String, Double> entry : submap.entrySet()) {  // Iterate through hashmap
 				            if (entry.getValue() == maxValueInMap) {
@@ -101,6 +119,7 @@ public class UserGraphFeatures
 				        }
 						id_list.add(splited[0]);
 						comments.add(kcom);
+						topic_vec.add(topic_line);
 						SVMWriter w = new SVMWriter(writer, splited[1], 1, f);
 						w.write();
 					}
@@ -115,7 +134,12 @@ public class UserGraphFeatures
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * This method computes translation score between pair of comments
+	 * @param aux: first comment
+	 * @param main: second comment
+	 * @return translation score
+	 */
 	public static double translation(String aux, String main)
 	{
 		String[] aux_split = aux.split(",\\s+");
@@ -172,9 +196,10 @@ public class UserGraphFeatures
 			return score/main_words.size();
 		return 0.0;
 	}
-	
-	
-	
+	/**
+	 * This method creates a map of word vectors
+	 * @param input: file containing vectors
+	 */
 	public static void embedding_map(String input)
 	{
 		File file = new File(input);
@@ -189,7 +214,7 @@ public class UserGraphFeatures
 				{
 					String splited[] = l.split("\\s+", 2);
 					String word = splited[0];
-					vector v = new vector(splited[1]);
+					vector v = new vector(splited[1], 0);
 					embedding_map.put(word, v);
 				}
 			} catch (IOException e) {
@@ -201,6 +226,12 @@ public class UserGraphFeatures
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * This method identifies comments where users explicitly mention another user by username
+	 * @param usernames: list of users in the thread till now
+	 * @param comment: the current comment
+	 * @return Returns the user_id of the user who is being explicitly mentioned in the comment
+	 */
 	public static int name_dialog(ArrayList<String> usernames, String comment)  //find users in dialogue by name
 	{
 		int val = -1;
@@ -212,10 +243,10 @@ public class UserGraphFeatures
 				splited = usernames.get(i).split("[-_\\s+]");
 			else
 				splited = usernames.get(i).split("((?<=[a-zA-Z])(?=[0-9]))|((?<=[0-9])(?=[a-zA-Z]))");
-			for(int j=0; j<splited.length; j++)
-			{
-				System.out.println(splited[j]);
-			}
+//			for(int j=0; j<splited.length; j++)
+//			{
+//				System.out.println(splited[j]);
+//			}
 			for(String words: spl)
 			{
 				for(String phrases: splited)
