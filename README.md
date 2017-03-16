@@ -32,9 +32,9 @@ java -Xmx10g -jar QARank.jar [absolute-path-to-xml_files-folder] [absolute-path-
 * The evaluation scripts used in the system can be looked up [here](http://alt.qcri.org/semeval2017/task3/data/uploads/semeval2017_task3_submissions_and_scores.zip).
 
 ## Contents
-* [Introduction](https://github.com/tudarmstadt-lt/QASelection/blob/master/src/main/java/cqa/doc/Home.md)
-* [Features](https://github.com/tudarmstadt-lt/QASelection/blob/master/src/main/java/cqa/doc/Features.md)
-* [File Format](https://github.com/tudarmstadt-lt/QASelection/blob/master/src/main/java/cqa/doc/file_format.md)
+* [Introduction](https://github.com/TitasNandi/QARank/blob/master/src/main/java/doc/Home.md)
+* [Features](https://github.com/TitasNandi/QARank/blob/master/src/main/java/doc/Features.md)
+* [File Format](https://github.com/TitasNandi/QARank/blob/master/src/main/java/doc/file_format.md)
 * [Slides](https://github.com/tudarmstadt-lt/QASelection/releases/download/release1/conference_presentation.pdf)
 
 
