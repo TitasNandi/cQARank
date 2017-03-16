@@ -29,7 +29,7 @@ java -Xmx10g -jar QARank.jar [absolute-path-to-xml_files-folder] [absolute-path-
 * The system will generate all folders and required files.
 * The final MAP scores of the system and the SVM accuracy can be found in **result_files/final_scores.txt** file.
 * Users can run the system on a different dataset, given the training and test files are in the format as in SemEval 2017 - Task 3.  
-* The evaluation scripts used in the system can be looked up [here](http://alt.qcri.org/semeval2017/task3/data/uploads/semeval2017_task3_submissions_and_score.zip).
+* The evaluation scripts used in the system can be looked up [here](http://alt.qcri.org/semeval2017/task3/data/uploads/semeval2017_task3_submissions_and_scores.zip).
 
 ## Contents
 * [Introduction](https://github.com/tudarmstadt-lt/QASelection/blob/master/src/main/java/cqa/doc/Home.md)
