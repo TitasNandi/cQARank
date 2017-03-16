@@ -34,9 +34,9 @@ public class Writer
 	public static void initialize()
 	{
 		System.out.println("Computing final scores......");
-		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_rel_com.txt", input+"/result_files/results_rel_com.txt", input+"/result_files/error_rel_com.txt", 0);
-		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_org_com.txt", input+"/result_files/results_org_com.txt", input+"/result_files/error_org_com.txt", 1);
-		WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
+		WriterRun(input+"/parsed_files/test_clean.txt", input+"/result_files/out_test.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
+		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_dev_keyword.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
+		//WriterRun(input+"/parsed_files/train_clean.txt", input+"/result_files/out_train.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
 		//WriterCustom(input+"/parsed_files/test_clean.txt", input+"/result_files/out_new_test.txt", input+"/result_files/weka_result_qc.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
 	}
 	public static void WriterRun(String inp1, String inp2, String out1, String out2)
@@ -63,8 +63,9 @@ public class Writer
 				{
 					String[] qs = str.split("\\s+");
 					String q_id = qs[0];
+					int num = Integer.parseInt(qs[1]);
 					String question = reader.readLine();
-					for(int i=0; i<10; i++)
+					for(int i=0; i<num; i++)
 					{
 						str = reader.readLine();
 						String[] splited = str.split("\\s+");
@@ -83,7 +84,7 @@ public class Writer
 						}
 						String bin_class = get_class(l);
 						comp_class(label, Double.parseDouble(l), c_id);
-						writer.println(q_id+" "+c_id+" 0 "+score+" "+bin_class);        //scorer script format
+						writer.println(q_id+"\t"+c_id+"\t"+(i+1)+"\t"+score+"\t"+bin_class);        //scorer script format
 					}
 				}
 				while((str = reader.readLine())!=null);
@@ -95,6 +96,15 @@ public class Writer
 				System.out.println("Bad classified as Bad: "+zisz);
 				System.out.println("good_count: "+good_count);
 				System.out.println("bad_count: "+bad_count);
+				System.out.println("Misclassification: "+(oisz+ziso));
+				double acc = (oiso+zisz)*1.0/(oiso+oisz+ziso+zisz);
+				double prec = oiso*1.0/(oiso+ziso);
+				double rec = oiso*1.0/(oiso+oisz);
+				double f1 = 2*prec*rec/(prec+rec);
+				System.out.println("Accuracy: "+acc);
+				System.out.println("Precision: "+prec);
+				System.out.println("Recall: "+rec);
+				System.out.println("F1: "+f1);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

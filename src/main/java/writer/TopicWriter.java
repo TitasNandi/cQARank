@@ -24,14 +24,10 @@ public class TopicWriter
 	static double[] weights = new double[20];
 	static String[] topic_words = new String[20];
 	static String input;
-	static String input2;
-	static String input3;
 	static String output;
-	public TopicWriter(String inp, String inp2, String inp3, String out)
+	public TopicWriter(String inp, String out)
 	{
 		input = inp;	
-		input2 = inp2;
-		input3 = inp3;
 		output = out;
 	}
 	/**
@@ -40,7 +36,8 @@ public class TopicWriter
 	public static void initialize()
 	{
 		System.out.println("Computing topic features......");
-		TopicWriterRun(input, input2, input3, output);
+		TopicWriterRun(input+"/parsed_files/train_clean.txt", input+"/topic_files/train_vectors.txt", input+"/topic_files/top_words.txt", output+"/train/topic_train.txt");
+		TopicWriterRun(input+"/parsed_files/test_clean.txt", input+"/topic_files/test_vectors.txt", input+"/topic_files/top_words.txt", output+"/test/topic_test.txt");
 	}
 	public static void TopicWriterRun(String input, String input1, String input2, String output)
 	{
@@ -84,11 +81,13 @@ public class TopicWriter
 				line = reader2.readLine();
 				while((line = reader.readLine()) != null)
 				{
+					String[] spl = line.split("\\s+");
+					int num = Integer.parseInt(spl[1]);
 					line = reader2.readLine();
-					String[] spl = line.split("\t", 3);
+					spl = line.split("\t", 3);
 					topic_vector que_vec = new topic_vector(spl[2]);
-					double posq = findKthLargest(que_vec.vec, 10);
-					int maxq = get_topmax(que_vec.vec);
+					double posq = findKthLargest(que_vec.vec, 10);             //find the first kth largest topic index
+					int maxq = get_topmax(que_vec.vec);                        //find the topic class of the question (cluster with max probability)
 					String words = "";
 					String non = "";
 					for(int i=0; i<que_vec.vec.length; i++)
@@ -105,7 +104,7 @@ public class TopicWriter
 					String l = deDup(words);
 					String l2 = deDup(non);
 					String question = reader.readLine();
-					for(int i=0; i<10; i++)
+					for(int i=0; i<num; i++)
 					{
 						line = reader.readLine();
 						String[] splited = line.split("\\s+");
@@ -141,11 +140,11 @@ public class TopicWriter
 						f[0] = que_vec.vector_cos(que_vec, ans_vec);                         //cosine similarity of topic vectors                    
 						f[1] = que_vec.vec_manhattan(que_vec, ans_vec);                      //manhattan distance of topic vectors
 						f[2] = que_vec.Euclidean(que_vec, ans_vec);                          //euclidean distance of topic vectors
-						f[3] = word_matcher(l, comment);
+						f[3] = word_matcher(l, comment);                                     //find word match between most probable topic words of question with comment
 						f[4] = word_matcher(l2, comment);
-						f[5] = word_matcher(l,al);
+						f[5] = word_matcher(l,al);											 //find word match between most probable topic words of question and comment
 						f[6] = word_matcher(l2,al2);
-						double[] sub = que_vec.vector_sub(que_vec, ans_vec);
+						double[] sub = que_vec.vector_sub(que_vec, ans_vec);                 //scoring vector = vector subtraction of topic vectors of question and comment
 						for(int x=0; x<sub.length; x++)
 						{
 							f[x+7] = sub[x];
@@ -230,7 +229,7 @@ public class TopicWriter
 	}
 }
 
-class topic_vector                                //find scoring vectors and cosine of question and comment vectors
+class topic_vector                                //find scoring vectors and cosine of question and comment topic vectors
 {
 	double[] vec;
 	public topic_vector(String s)

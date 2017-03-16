@@ -29,11 +29,11 @@ public class EmbeddingWriter
 	public static void initialize()
 	{
 		System.out.println("Writing word embeddings to files......");
-		//EmbeddingWriterRun(input+"/train_vectors.txt", output+"/train/embedding_train.txt");
-		//EmbeddingWriterRun(input+"/dev_vectors.txt", output+"/dev/embedding_dev.txt");
-		//EmbeddingWriterRun(input+"/test_vectors.txt", output+"/test/embedding_test.txt");
-		EmbeddingWriterRun(input+"/train_idf_vectors.txt", output+"/train/idfembedding_train.txt");
-		EmbeddingWriterRun(input+"/dev_idf_vectors.txt", output+"/dev/idfembedding_dev.txt");
+		EmbeddingWriterRun(input+"/train_vectors.txt", output+"/train/embedding_train.txt");
+		//EmbeddingWriterRun(input+"/dev_idf_vectors.txt", output+"/dev/embedding_dev.txt");
+		EmbeddingWriterRun(input+"/test_vectors.txt", output+"/test/embedding_test.txt");
+		//EmbeddingWriterRun(input+"/train_idf_vectors.txt", output+"/train/idfembedding_train.txt");
+		//EmbeddingWriterRun(input+"/dev_idf_vectors.txt", output+"/dev/idfembedding_dev.txt");
 	}
 	public static void EmbeddingWriterRun(String input, String output)
 	{
@@ -54,9 +54,10 @@ public class EmbeddingWriter
 				{
 					String splited[];
 					vector que_vec = null;
-					splited= line.split("\\s+", 2);
-					que_vec = new vector(splited[1]);
-					for(int i=0; i<10; i++)
+					splited= line.split("\\s+", 3);
+					int num = Integer.parseInt(splited[1]);
+					que_vec = new vector(splited[2]);
+					for(int i=0; i<num; i++)
 					{
 						line = reader.readLine();
 						splited = line.split("\\s+", 3);
