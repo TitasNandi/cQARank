@@ -16,15 +16,16 @@ import java.util.ArrayList;
  */
 public class MultiFileReader 
 {
-	static int num_features = 159;
-	static int train_count;
-	static int dev_count;
+	static int num_features;
+	static ArrayList<Integer> length_auth = new ArrayList<>();
+	static ArrayList<Integer> length_auth_dev = new ArrayList<>();
 	static String input1;
 	static String input2;
-	public MultiFileReader(String inp1, String inp2)
+	public MultiFileReader(String inp1, String inp2, int num)
 	{
 		input1 = inp1;	
 		input2 = inp2;
+		num_features = num;
 	}
 	/**
 	 * This method initializes computation
@@ -32,12 +33,11 @@ public class MultiFileReader
 	public static void initialize()
 	{
 		System.out.println("Combining SVM feature files......");
-		MultiFileReaderRun(input1+"/train/", input1+"/dev/", input2+"/train_clean.txt", input2+"/dev_clean.txt");
-		//MultiFileReaderRun(input1+"/train/", input1+"/test/", input2+"/train_clean.txt", input2+"/test_clean.txt");
+		MultiFileReaderRun(input1+"/train/", input1+"/test/", input2+"/train_clean.txt", input2+"/test_clean.txt");
 	}
 	public static void MultiFileReaderRun(String train, String dev, String train2, String dev2)
 	{
-		File SVM_dir_train = new File(train);              //path to train files' directory
+		File SVM_dir_train = new File(train);                 //path to train files' directory
 		File SVM_dir_dev = new File(dev);                  //path to test files' directory
 		File[] files_train = SVM_dir_train.listFiles();
 		File[] files_dev = SVM_dir_dev.listFiles();
@@ -51,11 +51,11 @@ public class MultiFileReader
 		{
 			SVM_files_dev[i] = dev+"/"+files_dev[i].getName();
 		}
-		train_count = len_cal(train2);
-		dev_count = len_cal(dev2);
+		len_cal(train2, 0);
+		len_cal(dev2, 1);
+		System.out.println(length_auth.size()+" "+length_auth_dev.size());
 		multireader(SVM_files_train, train+"/SVM_train.txt", num_features, 0, files_train.length);
-		multireader(SVM_files_dev, dev+"/SVM_dev.txt", num_features, 1, files_dev.length);
-		//multireader(SVM_files_dev, dev+"/SVM_test.txt", num_features, 1, files_dev.length);
+		multireader(SVM_files_dev, dev+"/SVM_test.txt", num_features, 1, files_dev.length);
 	}
 	/**
 	 * This method reads multiple train or test SVM data files and combines them in one
@@ -67,6 +67,16 @@ public class MultiFileReader
 	 */
 	public static void multireader(String[] input_dir, String output_file, int n, int flag, int num)          //combine all data files and normalize
 	{
+		ArrayList<Integer> l;
+		
+		if(flag == 0)
+		{
+			l = length_auth;
+		}
+		else
+		{
+			l = length_auth_dev;
+		}
 		BufferedReader[] reader = new BufferedReader[num];
 		PrintWriter writer = null;
 		try {
@@ -85,8 +95,8 @@ public class MultiFileReader
 			}
 		}
 		int caller = 0;
-		double[][] arr = new double[n][10]; 
-		int[] labels = new int[10];
+		double[][] arr = new double[n][l.get(0)]; 
+		int[] labels = new int[l.get(0)];
 		String line;
 		int breaker = 0;
 		int q_id_rank = 0;
@@ -109,7 +119,6 @@ public class MultiFileReader
 					start = 1;
 					for(int j=start; j<splited.length; j++)
 					{
-						//System.out.println(splited[j]);
 						if(j<10)
 						{
 							arr[count][caller-1] = Double.parseDouble(splited[j].substring(2));
@@ -131,11 +140,11 @@ public class MultiFileReader
 					}
 					
 				}
-				if(caller == 10)
+				if(caller == l.get(q_id_rank))
 				{
-					normalize(arr, n, 10);         //normalize by z-score
+					normalize(arr, n, l.get(q_id_rank));         //normalize by z-score
 					q_id_rank++;
-					for(int i=0; i<10; i++)
+					for(int i=0; i<l.get(q_id_rank-1); i++)
 					{
 						writer.print(labels[i]+" ");
 						for(int j=0; j<n; j++)
@@ -144,22 +153,13 @@ public class MultiFileReader
 						}
 						writer.println();
 					}
-					if(flag == 0)
+					
+					if(q_id_rank == l.size())
 					{
-						if(q_id_rank == train_count)
-						{
-							break;
-						}
+						break;
 					}
-					else
-					{
-						if(q_id_rank == dev_count)
-						{
-							break;
-						}
-					}
-					arr = new double[n][10];
-					labels = new int[10];
+					arr = new double[n][l.get(q_id_rank)];
+					labels = new int[l.get(q_id_rank)];
 					caller = 0;
 				}
 				if(breaker == 1)
@@ -178,27 +178,26 @@ public class MultiFileReader
 	 * @param input1: input train file
 	 * @param input2: input test file
 	 */
-	public static int len_cal(String input)
+	public static void len_cal(String input1, int flag)
 	{
-		int count = 0;
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(input));
+			BufferedReader reader = new BufferedReader(new FileReader(input1));
 			String line;
 			try {
-				while(true)
+				while((line = reader.readLine()) != null)
 				{
-						String qid = reader.readLine();
-						if(qid == null)
-						{
-							break;
-						}
-						String rquestion = reader.readLine();
-						for(int j=0; j<10; j++)
-						{
-							String cid = reader.readLine();
-							String comment = reader.readLine();
-							count++;
-						}
+					String[] qs = line.split("\\s+");
+					int num = Integer.parseInt(qs[1]);
+					if(flag == 0)
+						length_auth.add(num);
+					else
+						length_auth_dev.add(num);
+					reader.readLine();
+					for(int i=0; i<num; i++)
+					{
+						reader.readLine();
+						reader.readLine();
+					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -208,7 +207,7 @@ public class MultiFileReader
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return count;
+		
 	}
 	/**
 	 * This method z-score normalizes all data
