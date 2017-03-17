@@ -14,12 +14,11 @@ The String Similarity Features include various String Similarity metrics that fi
 * Normalized Levenshtein distance
 * Longest Common Subsequence
 
-**2. Dialogue and MetaData Features**
+**2. Dialogue Identification Features**
 
-This set of features finds dialogue chains among users, and computes various metadata features like 
-* Position of comment in the thread
-* if a comment by the asker is an acknowledgement
-* number of words and characters in the comment and more
+This set of features finds explicit dialogue chains among users by 
+* Repeated comments by the same user
+* If a user mentions another in the comment
 
 **3. Meta Data Features**
 
@@ -36,6 +35,10 @@ We train an LDA Topic Model using [Mallet](http://mallet.cs.umass.edu/topics.php
 **6. User Features**
 
 These features are extracted from the User and Dialogue Graph constructed from inter comment dependencies. 
+
+**7. Keyword and Named Entity Features**
+
+These features compute the keyword match and account for the presence of named entities in the question and comment and if these named entities belong to same entity categories etc.
 
 ## Evaluation
 We combine all feature files, normalize it and feed it to a Support Vector Machine for binary classification. We use the SVM probability scores for ranking purposes.
