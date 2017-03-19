@@ -26,8 +26,8 @@ public class StackingFeatures
 	}
 	public static void initialize()
 	{
-		StackingFeaturesRun(input+"/parsed_files/test_clean.txt", input2+"/out_test_stacking.txt", input3+"/out_test_stacking.txt", input+"/svm_files/test/stacking_test.txt");
-		//StackingFeaturesRun(input+"/parsed_files/train_clean.txt", input2+"/out_train_stacking.txt", input3+"/out_train_stacking.txt", input+"/svm_files/train/stacking_train.txt");
+		StackingFeaturesRun(input+"/parsed_files/test_clean.txt", input2+"/out_test.txt", input3+"/out_test.txt", input+"/svm_files/test/stacking_test.txt");
+		StackingFeaturesRun(input+"/parsed_files/train_clean.txt", input2+"/out_train.txt", input3+"/out_train.txt", input+"/svm_files/train/stacking_train.txt");
 	}
 	public static void StackingFeaturesRun(String input, String input2, String input3, String output)
 	{

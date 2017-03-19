@@ -15,6 +15,7 @@ public class QAMain
 {
 	public static void main(String[] args)
 	{
+		int num_features = 156;
 		String resource_path = args[1]+"/scripts/";                               //path to resources directory
     	parsed_files(args[0], 0);
     	get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
@@ -29,8 +30,12 @@ public class QAMain
     	meta_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");				//metadata features computation	
 		keyword_generator(get_parent(args[0]), resource_path);
 		//dependancy_features(get_parent(args[0]));
-		//stacking_features(get_parent(args[0]), get_parent(args[2])+"/result_files", get_parent(args[3])+"/result_files");
-		multi_file_reader(get_parent(args[0])+"/svm_files/", get_parent(args[0])+"/parsed_files/", 156);
+		if(args.length > 2)
+		{
+			stacking_features(get_parent(args[0]), args[2], args[3]);
+			num_features = 176;
+		}
+		multi_file_reader(get_parent(args[0])+"/svm_files/", get_parent(args[0])+"/parsed_files/", num_features);
 		run_svm(get_parent(args[0])+"/svm_files/", get_parent(resource_path), 6);
 		//threshold_fixer(get_parent(args[0])+"/result_files/");
 		compute_scorer(get_parent(args[0]), resource_path);
@@ -59,8 +64,11 @@ public class QAMain
     		builder.directory(new File(inp+"train/"));
     		Process p = builder.start();
     		p.waitFor();
-    		ProcessBuilder builder2 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/test/SVM_test.txt", inp+"/train/SVM_train.txt.model", pathgp+"/result_files/out_test.txt");
+    		ProcessBuilder builder2 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/train/SVM_train.txt", inp+"/train/SVM_train.txt.model", pathgp+"/result_files/out_train.txt");
     		Process p2 = builder2.start();
+    		p2.waitFor();
+    		ProcessBuilder builder3 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/test/SVM_test.txt", inp+"/train/SVM_train.txt.model", pathgp+"/result_files/out_test.txt");
+    		Process p3 = builder3.start();
     		p2.waitFor();
     	} catch (Exception e) {
 			// TODO Auto-generated catch block
