@@ -2,10 +2,8 @@ package core;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import writer.SVMWriter;
@@ -23,7 +21,7 @@ public class StackingFeatures
 	}
 	public static void initialize()
 	{
-		StackingFeaturesRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out.txt", input2+"/out.txt", input3+"/out.txt", input+"/svm_files/dev/stacking_dev.txt");
+		StackingFeaturesRun(input+"/parsed_files/test_clean.txt", input+"/result_files/out_test.txt", input2+"/out_test.txt", input3+"/out_test.txt", input+"/svm_files/test/stacking_test.txt");
 		StackingFeaturesRun(input+"/parsed_files/train_clean.txt", input+"/result_files/out_train.txt", input2+"/out_train.txt", input3+"/out_train.txt", input+"/svm_files/train/stacking_train.txt");
 	}
 	public static void StackingFeaturesRun(String input, String input2, String input3, String input4, String output)
@@ -98,36 +96,4 @@ public class StackingFeatures
 		}
 		
 	}
-	public static double Correlation(double[] xs, double[] ys) {
-	    //TODO: check here that arrays are not null, of the same length etc
-
-	    double sx = 0.0;
-	    double sy = 0.0;
-	    double sxx = 0.0;
-	    double syy = 0.0;
-	    double sxy = 0.0;
-
-	    int n = xs.length;
-
-	    for(int i = 0; i < n; ++i) {
-	      double x = xs[i];
-	      double y = ys[i];
-
-	      sx += x;
-	      sy += y;
-	      sxx += x * x;
-	      syy += y * y;
-	      sxy += x * y;
-	    }
-
-	    // covariation
-	    double cov = sxy / n - sx * sy / n / n;
-	    // standard error of x
-	    double sigmax = Math.sqrt(sxx / n -  sx * sx / n / n);
-	    // standard error of y
-	    double sigmay = Math.sqrt(syy / n -  sy * sy / n / n);
-
-	    // correlation is just a normalized covariation
-	    return cov / sigmax / sigmay;
-	  }
 }

@@ -27,8 +27,8 @@ public class TaskCombiner
 	{
 		System.out.println("Combining SVM feature files......");
 		//MultiFileReaderRun(input1+"/train/", input1+"/dev/", input2+"/train_clean.txt", input2+"/dev_clean.txt");
-		//TaskCombinerRun(input1+"/train/SVM_train.txt", input2+"/train/SVM_train.txt", input3+"/train/SVM_train.txt", input3+"/train/SVM_train_combined.txt");
-		TaskCombinerRun(input1+"/dev/SVM_dev.txt", input2+"/dev/SVM_dev.txt", input3+"/dev/SVM_dev.txt", input3+"/dev/SVM_dev_combined.txt");
+		//TaskCombinerRun(input1+"/train/SVM_train_38700.txt", input2+"/train/SVM_train.txt", input3+"/train/SVM_train_l2.txt", input3+"/train/SVM_train_combined.txt");
+		TaskCombinerRun(input1+"/test/SVM_test.txt", input2+"/test/SVM_test.txt", input3+"/test/SVM_test_l2.txt", input3+"/test/SVM_test_combined.txt");
 	}
 	public static void TaskCombinerRun(String input1, String input2, String input3, String output)
 	{

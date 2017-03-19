@@ -49,22 +49,25 @@ public class Writer
 //			oisz_arr = new ArrayList<>();
 //			ziso_arr = new ArrayList<>();
 //		}
-		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_rel_com.txt", input+"/result_files/results_rel_com.txt", input+"/result_files/error_rel_com.txt", 0);
+		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_dev.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
 		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out.txt", input+"/result_files/results_org_com.txt", input+"/result_files/error_org_com.txt", 1);
-		WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out@0.58.txt", input1, input2, input+"/result_files/results.txt", input+"/result_files/error.txt");
+		//WriterRun(input+"/parsed_files/dev_clean.txt", input+"/result_files/out_dev_embed.txt", input1+"/result_files/results.txt", input2+"/result_files/results.txt", input2+"/parsed_files/dev_clean.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
+		WriterRun(input+"/parsed_files/test_clean.txt", input+"/result_files/out_test.txt", input1+"/result_files/results.txt", input2+"/result_files/results.txt", input2+"/parsed_files/test_clean.txt", input+"/result_files/results.txt", input+"/result_files/error.txt");
 	}
-	public static void WriterRun(String inp1, String inp2, String inp3, String inp4, String out1, String out2)
+	public static void WriterRun(String inp1, String inp2, String inp3, String inp4, String inp5, String out1, String out2)
 	{
 		PrintWriter writer = null;
 		BufferedReader reader = null;
 		BufferedReader reader_2 = null;
 		BufferedReader reader_3 = null;
 		BufferedReader reader_4 = null;
+		BufferedReader reader_5 = null;
 		PrintWriter writer2 = null; 
 		File file = new File(inp1);
 		File file_2 = new File(inp2);
 		File file_3 = new File(inp3);
 		File file_4 = new File(inp4);
+		File file_5 = new File(inp5);
 		try {
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(out1, false)));
 			writer2 = new PrintWriter(new BufferedWriter(new FileWriter(out2, false)));
@@ -76,6 +79,7 @@ public class Writer
 			reader_2 = new BufferedReader(new FileReader(file_2));
 			reader_3 = new BufferedReader(new FileReader(file_3));
 			reader_4 = new BufferedReader(new FileReader(file_4));
+			reader_5 = new BufferedReader(new FileReader(file_5));
 			try {
 				String str = reader.readLine();
 				String str2 = reader_2.readLine();
@@ -85,6 +89,9 @@ public class Writer
 					String[] qs = str.split("\\s+");
 					String q_id = qs[0];
 					String question = reader.readLine();
+					String ls = reader_5.readLine();
+					ls = reader_5.readLine();
+					int rank = 0;
 					for(int i=0; i<100; i++)
 					{
 						str = reader.readLine();
@@ -103,18 +110,23 @@ public class Writer
 						}
 						String bin_class = get_class(l);
 						String score_com = reader_3.readLine();
-						splited = score_com.split("\\s+");
+						splited = score_com.split("\t");
 						double com_rank = Double.parseDouble(splited[3]);
 						//System.out.println(com_rank+"**");
+						
 						if(i%10 == 0)
 						{
+							ls = reader_5.readLine();
+							splited = ls.split("\\s+");
+							rank = Integer.parseInt(splited[2]);
+							ls = reader_5.readLine();
 							String score_rel = reader_4.readLine();
-							splited = score_rel.split("\\s+");
+							splited = score_rel.split("\t");
 							rel_rank = Double.parseDouble(splited[3]);
 							//System.out.println(rel_rank+"$$");
 						}
 						comp_class(label, Double.parseDouble(l), c_id);
-						writer.println(q_id+" "+c_id+" 0 "+(score*rel_rank*com_rank)+" "+bin_class);        //scorer script format
+						writer.println(q_id+"\t"+c_id+"\t"+((rank*100)+(i%10)+1)+"\t"+(Math.log(score)+Math.log(rel_rank)+Math.log(com_rank))+"\t"+bin_class);        //scorer script format
 					}
 				}
 				while((str = reader.readLine())!=null);

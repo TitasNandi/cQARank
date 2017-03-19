@@ -20,8 +20,6 @@ public class MetaFeatures                                      //Meta Data Featu
 	
 	static String input;
 	static String output;
-	static int good;
-	static int bad;
 	public MetaFeatures(String inp, String out)
 	{
 		input = inp;	
@@ -35,7 +33,7 @@ public class MetaFeatures                                      //Meta Data Featu
 		System.out.println("MetaData Features computation starts......");
 		MetaFeaturesRun(input+"/train_clean.txt",output+"/train/meta_train.txt");
 		//MetaFeaturesRun(input+"/dev_clean.txt", output+"/dev/meta_dev.txt");
-		//MetaFeaturesRun(input+"/test_clean.txt", output+"/test/meta_test.txt");
+		MetaFeaturesRun(input+"/test_clean.txt", output+"/test/meta_test.txt");
 	}
 	public static void MetaFeaturesRun(String input, String output1)
 	{
@@ -63,14 +61,6 @@ public class MetaFeatures                                      //Meta Data Featu
 							String[] splited = line.split("\\s+", 4);
 							String cuser = splited[2];
 							String label = splited[1];
-							if(label.equals("Good"))
-							{
-								good++;
-							}
-							else
-							{
-								bad++;
-							}
 							String comment = reader.readLine();
 							String[] spl = comment.split("\\s+");
 							f[0] = (100-i)*1.0/100;
@@ -86,7 +76,6 @@ public class MetaFeatures                                      //Meta Data Featu
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				System.out.println(good+" "+bad);
 				writer.close();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block

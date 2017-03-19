@@ -25,8 +25,8 @@ public class DialogueFeatures
 	public static void initialize()
 	{
 		System.out.println("Dialogue Features computation starts......");
-		//DialogueFeaturesRun(input+"/train_clean.txt", output+"/train/dialog_train.txt");
-		DialogueFeaturesRun(input+"/dev_clean.txt", output+"/dev/dialog_dev.txt");
+		DialogueFeaturesRun(input+"/train_clean.txt", output+"/train/dialog_train.txt");
+		DialogueFeaturesRun(input+"/test_clean.txt", output+"/test/dialog_test.txt");
 	}
 	public static void DialogueFeaturesRun(String input, String output)
 	{
@@ -47,24 +47,27 @@ public class DialogueFeatures
 					//String splited[] = line.split("\\s+", 3);
 					//String quser = splited[1];
 					//String qusername = splited[2].toLowerCase();
-					ArrayList<String> users = new ArrayList<>();
-					ArrayList<String> labels = new ArrayList<>();
-					ArrayList<String> cid = new ArrayList<>();
-					ArrayList<String> comments = new ArrayList<>();
-					//users.add(qusername);
 					line = reader.readLine();
-					for(int i=0; i<100; i++)
+					for(int j=0; j<10; j++)
 					{
-						line = reader.readLine();
-						String[] splited = line.split("\\s+", 4);
-						cid.add(splited[0]);
-						labels.add(splited[1]);
-						users.add(splited[3].toLowerCase());
-						comments.add(reader.readLine());
+						ArrayList<String> users = new ArrayList<>();
+						ArrayList<String> labels = new ArrayList<>();
+						ArrayList<String> cid = new ArrayList<>();
+						ArrayList<String> comments = new ArrayList<>();
+						//users.add(qusername);
+						for(int i=0; i<10; i++)
+						{
+							line = reader.readLine();
+							String[] splited = line.split("\\s+", 4);
+							cid.add(splited[0]);
+							labels.add(splited[1]);
+							users.add(splited[3].toLowerCase());
+							comments.add(reader.readLine());
+						}
+						ArrayList<Double> f1 = name_dialog(users, comments);
+						ArrayList<Double> f2 = dialog(users, cid);
+						SVM_writer(writer, labels, f1, f2);
 					}
-					ArrayList<Double> f1 = name_dialog(users, comments);
-					ArrayList<Double> f2 = dialog(users, cid);
-					SVM_writer(writer, labels, f1, f2);
 				}
 				writer.close();
 			} catch (IOException e) {

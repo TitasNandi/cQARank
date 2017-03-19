@@ -19,9 +19,11 @@ public class EmbeddingTrainer
 {
 	static int size = 100;              //word vector dimension
 	static String input;
-	public EmbeddingTrainer(String inp)
+	static String input2;
+	public EmbeddingTrainer(String inp, String inp2)
 	{
 		input = inp;	
+		input2 = inp2;
 	}
 	/**
 	 * This method initializes computation
@@ -32,9 +34,14 @@ public class EmbeddingTrainer
 		File inputFile = new File(input);
 		File parent = inputFile.getParentFile();                        //get parent directory
 		String pathgp = parent.getAbsolutePath();
-		EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/train_clean.txt", pathgp+"/word2vec_files/train_vectors.txt");
-		//EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/dev_clean.txt", pathgp+"/word2vec_files/dev_vectors.txt");
-		EmbeddingTrainerRun(pathgp+"/word2vec_files/vectors_unannotated.txt", pathgp+"/parsed_files/test_clean.txt", pathgp+"/word2vec_files/test_vectors.txt");
+		File dir = new File(pathgp+"/word2vec_files/");
+		boolean success = dir.mkdirs();
+		dir.setExecutable(true);
+		dir.setReadable(true);
+		dir.setWritable(true);
+		EmbeddingTrainerRun(input2+"vectors_unannotated.txt", pathgp+"/parsed_files/train_clean.txt", pathgp+"/word2vec_files/train_vectors.txt");
+		//EmbeddingTrainerRun(input2+"vectors_unannotated.txt", pathgp+"/parsed_files/dev_clean.txt", pathgp+"/word2vec_files/dev_vectors.txt");
+		EmbeddingTrainerRun(input2+"vectors_unannotated.txt", pathgp+"/parsed_files/test_clean.txt", pathgp+"/word2vec_files/test_vectors.txt");
 	}
 	public static void EmbeddingTrainerRun(String input1, String input2, String output1)
 	{

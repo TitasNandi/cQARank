@@ -16,15 +16,16 @@ import java.util.ArrayList;
  */
 public class MultiFileReader 
 {
-	static int num_features = 167;
+	static int num_features;
 	static int train_count;
 	static int dev_count;
 	static String input1;
 	static String input2;
-	public MultiFileReader(String inp1, String inp2)
+	public MultiFileReader(String inp1, String inp2, int num)
 	{
 		input1 = inp1;	
 		input2 = inp2;
+		num_features = num;
 	}
 	/**
 	 * This method initializes computation
@@ -32,8 +33,8 @@ public class MultiFileReader
 	public static void initialize()
 	{
 		System.out.println("Combining SVM feature files......");
-		MultiFileReaderRun(input1+"/train/", input1+"/dev/", input2+"/train_clean.txt", input2+"/dev_clean.txt");
-		//MultiFileReaderRun(input1+"/train/", input1+"/test/", input2+"/train_clean.txt", input2+"/test_clean.txt");
+		//MultiFileReaderRun(input1+"/train/", input1+"/dev/", input2+"/train_clean.txt", input2+"/dev_clean.txt");
+		MultiFileReaderRun(input1+"/train/", input1+"/test/", input2+"/train_clean.txt", input2+"/test_clean.txt");
 	}
 	public static void MultiFileReaderRun(String train, String dev, String train2, String dev2)
 	{
@@ -54,7 +55,7 @@ public class MultiFileReader
 		train_count = len_cal(train2);
 		dev_count = len_cal(dev2);
 		multireader(SVM_files_train, train+"/SVM_train.txt", num_features, 0, files_train.length);
-		multireader(SVM_files_dev, dev+"/SVM_dev.txt", num_features, 1, files_dev.length);
+		multireader(SVM_files_dev, dev+"/SVM_test.txt", num_features, 1, files_dev.length);
 	}
 	/**
 	 * This method reads multiple train or test SVM data files and combines them in one
