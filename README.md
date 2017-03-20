@@ -2,8 +2,8 @@
 QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use for academic and commercial purposes without restrictions.
 
 ## Downloading QQRank
-* Download the jar file of the project from [here](https://github.com/tudarmstadt-lt/QASelection/releases/download/release1/QARank.jar).
-* Alternatively, download the [zip](https://github.com/tudarmstadt-lt/QASelection/archive/master.zip) of the java project and import it as a **maven** project in eclipse for experimentation.
+* Download the jar file of the project from [here](https://github.com/TitasNandi/QQRank/releases/download/1.0/QQRank.jar).
+* Alternatively, download the [zip](https://github.com/TitasNandi/QQRank/archive/1.0.zip) of the java project and import it as a **maven** project in eclipse for experimentation.
 
 ## Downloading Data
 * QQRank requires a training xml file, a test xml file and unannotated data to train models.
@@ -16,9 +16,9 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
  * Alternatively, combine various training xml files into one file *train.xml* for larger training data. Make sure to preserve the XML tree structure while doing this.
 * Similarly, choose dev/test files in `semeval2016-task3-cqa-ql-traindev-v3.2/v3.2/dev/` or `semeval2016_task3_tests/SemEval2016_task3_test/English/` as test data and rename it **test.xml**.
 * The unannotated data can be downloaded from [here](http://alt.qcri.org/semeval2016/task3/data/uploads/QL-unannotated-data-subtaskA.xml.zip).
-* Download the *python scripts* required to run the system from [here](https://github.com/tudarmstadt-lt/QASelection/releases/download/release1/resources.zip).
+* Download the *python scripts* required to run the system from [here](https://github.com/TitasNandi/QQRank/releases/download/1.0/resources.zip).
 * Unzip this `resources` folder in a suitable place.
-* The trained word embeddings on the large unannotated data can be found [here](https://github.com/tudarmstadt-lt/QASelection/releases/download/release1/vectors_unannotated.txt).
+* The trained word embeddings on the large unannotated data can be found [here](https://github.com/TitasNandi/QQRank/releases/download/1.0/vectors_unannotated.txt).
 
 ## Running QARank
 * Running QQRank jar can be done in two sequential steps
@@ -27,7 +27,7 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
   java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder]
   ```
   * Subsequently, Run QQRank along with the stacking features obtained from the scores of QARank and QCRank
-    * For this, the jar file takes two additional arguments, the first being the path of the `result_files` folder of QARank (subtask A) output and the second being the path of `result_files` folder of QCRank (subtask B) output
+    * For this, the jar file takes two additional arguments, the first being the path of the `result_files` folder of QARank (subtask A) output and the second being the path of `result_files` folder of QCRank (subtask C) output
     * With these additional arguments, run QQRank as
      ```
      java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] [absolute-path-to-result_files-QARank] [absolute-path-to-result_files-QCRank]
@@ -41,7 +41,7 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 * [Introduction](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/Home.md)
 * [Features](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/Features.md)
 * [File Format](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/file_format.md)
-* [Slides](https://github.com/tudarmstadt-lt/QASelection/releases/download/release1/conference_presentation.pdf)
+* [Slides](https://github.com/TitasNandi/QARank/releases/download/1.0/QARank_prezi.pdf)
 
 
 
