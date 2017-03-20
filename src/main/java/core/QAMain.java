@@ -1,7 +1,6 @@
 package core;
 import java.io.File;
 
-import Dependancy.DependancyWriter;
 import core.DialogueFeatures;
 import core.EmbeddingTrainer;
 import core.MetaFeatures;
@@ -17,26 +16,29 @@ public class QAMain
 	{
 		int num_features = 156;
 		String resource_path = args[1]+"/scripts/";                               //path to resources directory
-    	parsed_files(args[0], 0);
-    	get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
-    	string_similarity(get_parent(args[0])+"/parsed_files/");
-    	//dialogue_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
-    	embedding_trainer(args[0], resource_path);
-		topic_file_creator(get_parent(args[0]), resource_path);
-		topic_trainer(get_parent(args[0])+"/topic_files/", resource_path);
-		topic_writer(get_parent(args[0]), get_parent(args[0])+"/svm_files/");
-    	embedding_writer(get_parent(args[0])+"/word2vec_files/", get_parent(args[0])+"/svm_files/");
-		//thread_testing(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
-    	meta_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");				//metadata features computation	
-		keyword_generator(get_parent(args[0]), resource_path);
-		//dependancy_features(get_parent(args[0]));
-		if(args.length > 2)
+		if(args.length == 2)
+		{
+	    	parsed_files(args[0], 0);
+	    	get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
+	    	string_similarity(get_parent(args[0])+"/parsed_files/");
+	    	//dialogue_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
+	    	embedding_trainer(args[0], resource_path);
+			topic_file_creator(get_parent(args[0]), resource_path);
+			topic_trainer(get_parent(args[0])+"/topic_files/", resource_path);
+			topic_writer(get_parent(args[0]), get_parent(args[0])+"/svm_files/");
+	    	embedding_writer(get_parent(args[0])+"/word2vec_files/", get_parent(args[0])+"/svm_files/");
+			//thread_testing(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
+	    	meta_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");				//metadata features computation	
+			keyword_generator(get_parent(args[0]), resource_path);
+			//dependancy_features(get_parent(args[0]));
+		}
+		else
 		{
 			stacking_features(get_parent(args[0]), args[2], args[3]);
 			num_features = 176;
 		}
 		multi_file_reader(get_parent(args[0])+"/svm_files/", get_parent(args[0])+"/parsed_files/", num_features);
-		run_svm(get_parent(args[0])+"/svm_files/", get_parent(resource_path), 6);
+		run_svm(get_parent(args[0])+"/svm_files/", get_parent(resource_path), 6, args.length);
 		//threshold_fixer(get_parent(args[0])+"/result_files/");
 		compute_scorer(get_parent(args[0]), resource_path);
 		writer(get_parent(args[0]));
@@ -47,7 +49,7 @@ public class QAMain
      * @param inp: The input SVM files directory
      * @param resource_path: The path to resources folder
      */
-    public static void run_svm(String inp, String resource_path, int param)
+    public static void run_svm(String inp, String resource_path, int param, int num_args)
     {
     	System.out.println("SVM computation starts......");
     	System.out.println("SVM parameters: -s "+param+" (L2-regularized logistic regression)");
@@ -69,7 +71,19 @@ public class QAMain
     		p2.waitFor();
     		ProcessBuilder builder3 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/test/SVM_test.txt", inp+"/train/SVM_train.txt.model", pathgp+"/result_files/out_test.txt");
     		Process p3 = builder3.start();
-    		p2.waitFor();
+    		p3.waitFor();
+    		if(num_args == 2)
+    		{
+	    		ProcessBuilder builder4 = new ProcessBuilder("rm","-r",inp+"/train/SVM_train.txt");
+	    		Process p4 = builder4.start();
+	    		p4.waitFor();
+	    		ProcessBuilder builder5 = new ProcessBuilder("rm","-r",inp+"/train/SVM_train.txt.model");
+	    		Process p5 = builder5.start();
+	    		p5.waitFor();
+	    		ProcessBuilder builder6 = new ProcessBuilder("rm","-r",inp+"/test/SVM_test.txt");
+	    		Process p6 = builder6.start();
+	    		p6.waitFor();
+    		}
     	} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -150,11 +164,6 @@ public class QAMain
     {
     	EmbeddingTrainer e = new EmbeddingTrainer(inp, inp2);
     	e.initialize();
-    }
-	public static void dependancy_features(String inp)
-    {
-    	DependancyWriter dw = new DependancyWriter(inp);
-    	dw.initialize();
     }
 	public static void threshold_fixer(String inp)
     {
