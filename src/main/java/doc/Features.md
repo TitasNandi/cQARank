@@ -36,9 +36,9 @@ We train an LDA Topic Model using [Mallet](http://mallet.cs.umass.edu/topics.php
 
 These features are extracted from the User and Dialogue Graph constructed from inter comment dependencies. 
 
-**7. Keyword and Named Entity Features**
+**7. Keyword Features**
 
-These features compute the keyword match and account for the presence of named entities in the question and comment and if these named entities belong to same entity categories etc.
+This computes the keyword match and uses the relative weight of common keywords as features, finding the focus of the question and comment.
 
 ## Evaluation
 We combine all feature files, normalize it and feed it to a Support Vector Machine for binary classification. We use the SVM probability scores for ranking purposes.
