@@ -98,12 +98,12 @@ public class QAMain
     {
     	System.out.println("Computing scorer scripts......");
     	try {
-			Process p = (new ProcessBuilder("python",resource_path+"scorer_format.py",inp+"/parsed_files/test_clean.txt",inp+"/result_files/scores_gold.txt")).start();
-			p.waitFor();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    			Process p = (new ProcessBuilder("python",resource_path+"scorer_format.py",inp+"/parsed_files/test_clean.txt",inp+"/result_files/scores_gold.txt")).start();
+    			p.waitFor();
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
     }
     public static void topic_file_creator(String inp, String resource_path)
     {
@@ -112,11 +112,11 @@ public class QAMain
     	String pathgp = inputFile.getAbsolutePath();
     	File dir = new File(pathgp+"/topic_files/");
     	boolean success = dir.mkdirs();
-		try {
-			Process p = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/train_clean.txt",inp+"/topic_files/topic_train.txt")).start();
-			p.waitFor();
-			Process p2 = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/test_clean.txt",inp+"/topic_files/topic_test.txt")).start();
-			p2.waitFor();
+    	try {
+    		Process p = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/train_clean.txt",inp+"/topic_files/topic_train.txt")).start();
+    		p.waitFor();
+    		Process p2 = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/test_clean.txt",inp+"/topic_files/topic_test.txt")).start();
+    		p2.waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -139,7 +139,7 @@ public class QAMain
 			e.printStackTrace();
 		}
     }
-	public static void parsed_files(String inp, int flag)
+    public static void parsed_files(String inp, int flag)
     {
     	System.out.println("Loading XML data......");
     	XmlReader xml = new XmlReader(inp, flag);
