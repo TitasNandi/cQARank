@@ -10,8 +10,7 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 * The system was trained and tested on **[SemEval 2017 - Task 3: Community Question Answering](http://alt.qcri.org/semeval2017/task3/) Subtask B** data.
 * Create a directory named **xml_files** in your local machine.
 * The training+dev data can be downloaded from [here](http://alt.qcri.org/semeval2016/task3/data/uploads/semeval2016-task3-cqa-ql-traindev-v3.2.zip).
-* The test data for 2017 can be downloaded from
-[here](http://alt.qcri.org/semeval2017/task3/data/uploads/semeval2017_task3_test_input_abcd.zip).
+* The test data for 2017 can be downloaded from [here](http://alt.qcri.org/semeval2017/task3/data/uploads/semeval2017_task3_test_input_abcd.zip).
 * After unzipping this folder, move to `semeval2016-task3-cqa-ql-traindev-v3.2/v3.2/train/`. The entire training data for Task 3 can be found here. 
  * Choose `SemEval2016-Task3-CQA-QL-train-part1.xml` or `SemEval2016-Task3-CQA-QL-train-part2.xml` train files for training and copy it to *xml_files* directory. Rename the training file **train.xml**.
  * Alternatively, combine various training xml files into one file *train.xml* for larger training data. Make sure to preserve the XML tree structure while doing this.
@@ -22,10 +21,17 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 * The trained word embeddings on the large unannotated data can be found [here](https://github.com/tudarmstadt-lt/QASelection/releases/download/release1/vectors_unannotated.txt).
 
 ## Running QARank
-* Run QQRank jar as
-```
-java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder]
-```
+* Running QQRank jar can be done in two sequential steps
+  * Run QQRank for the generic set of features
+  ```
+  java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder]
+  ```
+  * Subsequently, Run QQRank along with the stacking features obtained from the scores of QARank and QCRank
+    * For this, the jar file takes two additional arguments, the first being the path of the `result_files` folder of QARank (subtask A) output and the second being the path of `result_files` folder of QCRank (subtask B) output
+    * With these additional arguments, run QQRank as
+     ```
+     java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] [absolute-path-to-result_files-QARank] [absolute-path-to-result_files-QCRank]
+     ```  
 * The system will generate all folders and required files.
 * The final MAP scores of the system and the SVM accuracy can be found in **result_files/final_scores.txt** file.
 * Users can run the system on a different dataset, given the training and test files are in the format as in SemEval 2017 - Task 3.  
