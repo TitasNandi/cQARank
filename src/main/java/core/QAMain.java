@@ -18,17 +18,17 @@ public class QAMain
 		String resource_path = args[1]+"/scripts/";                               //path to resources directory
 		if(args.length == 2)
 		{
-	    	parsed_files(args[0], 0);
-	    	get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
-	    	string_similarity(get_parent(args[0])+"/parsed_files/");
-	    	//dialogue_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
-	    	embedding_trainer(args[0], resource_path);
+			parsed_files(args[0], 0);
+			get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
+			string_similarity(get_parent(args[0])+"/parsed_files/");
+			//dialogue_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
+			embedding_trainer(args[0], resource_path);
 			topic_file_creator(get_parent(args[0]), resource_path);
 			topic_trainer(get_parent(args[0])+"/topic_files/", resource_path);
 			topic_writer(get_parent(args[0]), get_parent(args[0])+"/svm_files/");
-	    	embedding_writer(get_parent(args[0])+"/word2vec_files/", get_parent(args[0])+"/svm_files/");
+			embedding_writer(get_parent(args[0])+"/word2vec_files/", get_parent(args[0])+"/svm_files/");
 			//thread_testing(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");
-	    	meta_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");				//metadata features computation	
+			meta_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");				//metadata features computation	
 			keyword_generator(get_parent(args[0]), resource_path);
 			//dependancy_features(get_parent(args[0]));
 		}
@@ -54,13 +54,13 @@ public class QAMain
     	System.out.println("SVM computation starts......");
     	System.out.println("SVM parameters: -s "+param+" (L2-regularized logistic regression)");
     	File inputFile = new File(inp);
-		File parent = inputFile.getParentFile();
-		String pathgp = parent.getAbsolutePath();
-		File dir = new File(pathgp+"/result_files/");
-		boolean success = dir.mkdirs();
-		dir.setExecutable(true);
-		dir.setReadable(true);
-		dir.setWritable(true);
+    	File parent = inputFile.getParentFile();
+    	String pathgp = parent.getAbsolutePath();
+    	File dir = new File(pathgp+"/result_files/");
+    	boolean success = dir.mkdirs();
+    	dir.setExecutable(true);
+    	dir.setReadable(true);
+    	dir.setWritable(true);
     	try {
     		ProcessBuilder builder = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Train","-s",param+"",inp+"/train/SVM_train.txt");
     		builder.directory(new File(inp+"train/"));
@@ -97,7 +97,7 @@ public class QAMain
     public static void compute_scorer(String inp, String resource_path)
     {
     	System.out.println("Computing scorer scripts......");
-		try {
+    	try {
 			Process p = (new ProcessBuilder("python",resource_path+"scorer_format.py",inp+"/parsed_files/test_clean.txt",inp+"/result_files/scores_gold.txt")).start();
 			p.waitFor();
 		} catch (Exception e) {
@@ -109,9 +109,9 @@ public class QAMain
     {
     	//System.out.println("Computing scorer scripts......");
     	File inputFile = new File(inp);
-		String pathgp = inputFile.getAbsolutePath();
-		File dir = new File(pathgp+"/topic_files/");
-		boolean success = dir.mkdirs();
+    	String pathgp = inputFile.getAbsolutePath();
+    	File dir = new File(pathgp+"/topic_files/");
+    	boolean success = dir.mkdirs();
 		try {
 			Process p = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/train_clean.txt",inp+"/topic_files/topic_train.txt")).start();
 			p.waitFor();
@@ -125,7 +125,7 @@ public class QAMain
     public static void keyword_generator(String inp, String resource_path)
     {
     	System.out.println("Computing keyword features......");
-		try {
+    	try {
 			Process p = (new ProcessBuilder("python",resource_path+"keyword_extractor.py",inp+"/topic_files/topic_train.txt",inp+"/topic_files/keywords_train.txt",resource_path+"SmartStoplist.txt")).start();
 			p.waitFor();
 			Process p2 = (new ProcessBuilder("python",resource_path+"keyword_writer.py",inp+"/topic_files/keywords_train.txt",inp+"/parsed_files/train_clean.txt", inp+"/svm_files/train/keyword_train.txt")).start();
@@ -192,8 +192,8 @@ public class QAMain
     	ProcessBuilder builder = new ProcessBuilder("python", resource_path+"ev.py", inp+"scores_gold.txt", inp+"results.txt");
     	File outputFile = new File(inp+"final_scores.txt");
     	builder.redirectOutput(outputFile);
- 		Process p;
-		try {
+    	Process p;
+    	try {
 			p = builder.start();
 			p.waitFor();
 		} catch (Exception e) {
@@ -233,8 +233,8 @@ public class QAMain
     }
 	public static void get_clean_files(String inp, String resource_path)
     {
-    	System.out.println("Producing clean data......");
-    	try {
+		System.out.println("Producing clean data......");
+		try {
     		Process p = (new ProcessBuilder("python",resource_path+"check.py",inp+"train.txt",inp+"train_clean.txt")).start();
     		p.waitFor();
     		Process p1 = (new ProcessBuilder("python",resource_path+"check.py",inp+"test.txt",inp+"test_clean.txt")).start();
