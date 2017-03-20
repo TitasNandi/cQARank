@@ -37,10 +37,10 @@ QCRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 * The evaluation scripts used in the system can be looked up [here](http://alt.qcri.org/semeval2017/task3/data/uploads/semeval2017_task3_submissions_and_scores.zip).
 
 ## Contents
-* [Introduction](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/Home.md)
-* [Features](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/Features.md)
-* [File Format](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/file_format.md)
-* [Slides](https://github.com/tudarmstadt-lt/QASelection/releases/download/release1/conference_presentation.pdf)
+* [Introduction](https://github.com/TitasNandi/QCRank/blob/master/src/main/java/doc/Home.md)
+* [Features](https://github.com/TitasNandi/QCRank/blob/master/src/main/java/doc/Features.md)
+* [File Format](https://github.com/TitasNandi/QCRank/blob/master/src/main/java/doc/file_format.md)
+* [Slides](https://github.com/TitasNandi/QARank/releases/download/1.0/QARank_prezi.pdf)
 
 
 
