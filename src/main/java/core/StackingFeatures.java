@@ -21,6 +21,7 @@ public class StackingFeatures
 	}
 	public static void initialize()
 	{
+		System.out.println("Stacking Features computation starts....");
 		StackingFeaturesRun(input+"/parsed_files/test_clean.txt", input+"/result_files/out_test.txt", input2+"/out_test.txt", input3+"/out_test.txt", input+"/svm_files/test/stacking_test.txt");
 		StackingFeaturesRun(input+"/parsed_files/train_clean.txt", input+"/result_files/out_train.txt", input2+"/out_train.txt", input3+"/out_train.txt", input+"/svm_files/train/stacking_train.txt");
 	}
