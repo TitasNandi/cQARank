@@ -145,27 +145,27 @@ public class QAMain
     	XmlReader xml = new XmlReader(inp, flag);
     	xml.initialize();	
     }
-	public static void string_similarity(String inp)
+    public static void string_similarity(String inp)
     {
     	StringSimilarity g = new StringSimilarity(inp);
     	g.initialize();
     }
-	public static void topic_writer(String inp, String out)
+    public static void topic_writer(String inp, String out)
     {
     	TopicWriter t = new TopicWriter(inp, out);
     	t.initialize();
     }
-	public static void dialogue_features(String inp, String out)
+    public static void dialogue_features(String inp, String out)
     {
     	DialogueFeatures f = new DialogueFeatures(inp, out);
     	f.initialize();
     }
-	public static void embedding_trainer(String inp, String inp2)
+    public static void embedding_trainer(String inp, String inp2)
     {
     	EmbeddingTrainer e = new EmbeddingTrainer(inp, inp2);
     	e.initialize();
     }
-	public static void threshold_fixer(String inp)
+    public static void threshold_fixer(String inp)
     {
     	ThresholdFixer tf = new ThresholdFixer(inp);
     	tf.initialize();
@@ -247,11 +247,11 @@ public class QAMain
 		}
     }
 	public static String get_parent(String inp)
-    {
+	{
     	File f = new File(inp);
     	String parent = f.getParent();
     	return parent;
-    }
+	}
 	/**
      * This method computes final scores
      * @param inp: The input directory
