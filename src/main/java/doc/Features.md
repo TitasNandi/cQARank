@@ -22,15 +22,21 @@ This set of features encapsulates the position of comment, if the comment is an 
 
 We train word embeddings of dimension 100 using [Word2Vec](http://deeplearning4j.org/word2vec) on unannotated data. From these we compute sentence vectors and various distance metrics between question and comment.
 
-**4. Topic features**
+**4. Dialogue Identification Features**
+
+This set of features finds explicit dialogue chains among users by 
+* Repeated comments by the same user
+* If a user mentions another in the comment
+
+**5. Topic features**
 
 We train an LDA Topic Model using [Mallet](http://mallet.cs.umass.edu/topics.php) and find topic distributions in training and test data. From these topic vectors and words, we obtain various features.
 
-**5. Keyword Features**
+**6. Keyword Features**
 
 This computes the keyword match and uses the relative weight of common keywords as features, finding the focus of the question and comment.
 
-**6. Stacking Features**
+**7. Stacking Features**
 
 These features are extracted from the scores of subtask A and subtask B, which propagate useful information which can then be used to strengthen the feature set of this subtask.
 
