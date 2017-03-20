@@ -90,8 +90,8 @@ public class QAMain
     	File inputFile = new File(inp);
     	String pathgp = inputFile.getAbsolutePath();
     	File dir = new File(pathgp+"/topic_files/");
-		boolean success = dir.mkdirs();
-		try {
+    	boolean success = dir.mkdirs();
+    	try {
 			Process p = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/train_clean.txt",inp+"/topic_files/topic_train.txt")).start();
 			p.waitFor();
 			Process p2 = (new ProcessBuilder("python",resource_path+"file_writer.py",inp+"/parsed_files/test_clean.txt",inp+"/topic_files/topic_test.txt")).start();
@@ -166,8 +166,8 @@ public class QAMain
     	ProcessBuilder builder = new ProcessBuilder("python", resource_path+"ev.py", inp+"scores_gold.txt", inp+"results.txt");
     	File outputFile = new File(inp+"final_scores.txt");
     	builder.redirectOutput(outputFile);
- 		Process p;
-		try {
+    	Process p;
+    	try {
 			p = builder.start();
 			p.waitFor();
 		} catch (Exception e) {
