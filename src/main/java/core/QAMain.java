@@ -70,7 +70,7 @@ public class QAMain
     		ProcessBuilder builder2 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/train/SVM_train_sampled.txt", inp+"/train/SVM_train_sampled.txt.model", pathgp+"/result_files/out_train.txt");
     		Process p2 = builder2.start();
     		p2.waitFor();
-    		ProcessBuilder builder3 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/test/SVM_test_sampled.txt", inp+"/train/SVM_train_sampled.txt.model", pathgp+"/result_files/out_test.txt");
+    		ProcessBuilder builder3 = new ProcessBuilder("java","-cp",resource_path+"/lib/liblinear-java-1.95.jar","de.bwaldvogel.liblinear.Predict","-b","1",inp+"/test/SVM_test.txt", inp+"/train/SVM_train_sampled.txt.model", pathgp+"/result_files/out_test.txt");
     		Process p3 = builder3.start();
     		p3.waitFor();
     		if(num_args == 4)
@@ -81,7 +81,7 @@ public class QAMain
 	    		ProcessBuilder builder5 = new ProcessBuilder("rm","-r",inp+"/train/SVM_train_sampled.txt.model");
 	    		Process p5 = builder5.start();
 	    		p5.waitFor();
-	    		ProcessBuilder builder6 = new ProcessBuilder("rm","-r",inp+"/test/SVM_test_sampled.txt");
+	    		ProcessBuilder builder6 = new ProcessBuilder("rm","-r",inp+"/test/SVM_test.txt");
 	    		Process p6 = builder6.start();
 	    		p6.waitFor();
     		}
@@ -112,8 +112,6 @@ public class QAMain
 		try {
 			Process p = (new ProcessBuilder("python",resource_path+"plot_smote.py",inp+"/train/SVM_train.txt",inp+"/train/SVM_train_sampled.txt")).start();
 			p.waitFor();
-			Process p2 = (new ProcessBuilder("python",resource_path+"plot_smote.py",inp+"/test/SVM_test.txt",inp+"/test/SVM_test_sampled.txt")).start();
-			p2.waitFor();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
