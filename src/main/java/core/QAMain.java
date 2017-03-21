@@ -16,7 +16,14 @@ public class QAMain
 	{
 		int num_features = 161;
 		String resource_path = args[1]+"/scripts/";                               //path to resources directory
-		parsed_files(args[0], 0);
+		if(Integer.parseInt(args[2]) == 0)
+		{	
+			parsed_files(args[0], 0);
+		}
+		else
+		{
+			parsed_files(args[0], 1);
+		}
 		get_clean_files(get_parent(args[0])+"/parsed_files/", resource_path);
 		string_similarity(get_parent(args[0])+"/parsed_files/");
 		dialogue_features(get_parent(args[0])+"/parsed_files/",get_parent(args[0])+"/svm_files/");

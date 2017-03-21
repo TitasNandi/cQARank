@@ -30,18 +30,22 @@ public class XmlReader
 		File parent = inputFile.getParentFile();
 		String pathgp = parent.getAbsolutePath();
 		System.out.println("XML parsing starts......");
+		File dir = new File(pathgp+"/parsed_files/");
+		boolean success = dir.mkdirs();
+		dir.setExecutable(true);
+		dir.setReadable(true);
+		dir.setWritable(true);
 		if(flag == 0)
 		{
-			File dir = new File(pathgp+"/parsed_files/");
-			boolean success = dir.mkdirs();
-			dir.setExecutable(true);
-			dir.setReadable(true);
-			dir.setWritable(true);
-			new_parse(input+"/train.xml", pathgp+"/parsed_files/train.txt");
-			//old_parse(input+"/train2.xml", pathgp+"/parsed_files/train.txt");
-			new_parse(input+"/test.xml", pathgp+"/parsed_files/test.txt");
-			//old_parse(input+"/test2.xml", pathgp+"/parsed_files/test.txt");
+			old_parse(input+"/train.xml", pathgp+"/parsed_files/train.txt");
+			old_parse(input+"/test.xml", pathgp+"/parsed_files/test.txt");
 		}
+		else
+		{
+			new_parse(input+"/train.xml", pathgp+"/parsed_files/train.txt");
+			new_parse(input+"/test.xml", pathgp+"/parsed_files/test.txt");
+		}
+		
 	}
 	/**
 	 * This method parses XML file if the data format follows SemEval 2016-17 task
