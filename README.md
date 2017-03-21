@@ -22,10 +22,15 @@ QARank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 * The trained word embeddings on the large unannotated data can be found [here](https://github.com/TitasNandi/QARank/releases/download/1.0/vectors_unannotated.txt).
 
 ## Running QARank
-* Run QARank jar as
-```
-java -Xmx10g -jar QARank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder]
-```
+* Running QARank can be done with two formats of input xml files
+  * If the training and test files are specific to subtask A (does not contain Original Questions), then run the jar with *0* as the flag
+  ```
+  java -Xmx10g -jar QARank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] 0
+  ```
+  * If the training and test files contain both Original and Related Questions, then run the jar with *1* as the flag
+   ```
+  java -Xmx10g -jar QARank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] 1
+  ```
 * The system will generate all folders and required files.
 * The final MAP scores of the system and the SVM accuracy can be found in **result_files/final_scores.txt** file.
 * Users can run the system on a different dataset, given the training and test files are in the format as in SemEval 2017 - Task 3.  
