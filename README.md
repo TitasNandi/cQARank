@@ -20,7 +20,7 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 * Unzip this `resources` folder in a suitable place.
 * The trained word embeddings on the large unannotated data can be found [here](https://github.com/TitasNandi/QQRank/releases/download/1.0/vectors_unannotated.txt).
 
-## Running QARank
+## Running QQRank
 * Running QQRank jar can be done in two sequential steps
   * Run QQRank for the generic set of features
   ```
