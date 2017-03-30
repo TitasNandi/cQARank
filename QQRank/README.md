@@ -2,7 +2,7 @@
 QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use for academic and commercial purposes without restrictions.
 
 ## Downloading QQRank
-* Download the jar file of the project from [here](https://github.com/TitasNandi/QQRank/releases/download/1.0/QQRank.jar).
+* Download the jar file of the project from [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/QQRank.jar).
 * Alternatively, download the [zip](https://github.com/TitasNandi/QQRank/archive/1.0.zip) of the java project and import it as a **maven** project in eclipse for experimentation.
 
 ## Downloading Data
@@ -16,9 +16,9 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
  * Alternatively, combine various training xml files into one file *train.xml* for larger training data. Make sure to preserve the XML tree structure while doing this.
 * Similarly, choose dev/test files in `semeval2016-task3-cqa-ql-traindev-v3.2/v3.2/dev/` or `semeval2016_task3_tests/SemEval2016_task3_test/English/` as test data and rename it **test.xml**.
 * The unannotated data can be downloaded from [here](http://alt.qcri.org/semeval2016/task3/data/uploads/QL-unannotated-data-subtaskA.xml.zip).
-* Download the *python scripts* required to run the system from [here](https://github.com/TitasNandi/QQRank/releases/download/1.0/resources.zip).
-* Unzip this `resources` folder in a suitable place.
-* The trained word embeddings on the large unannotated data can be found [here](https://github.com/TitasNandi/QQRank/releases/download/1.0/vectors_unannotated.txt).
+* Download the *python scripts* required to run the system from [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/resources_QQRank.zip).
+* Unzip this `resources_QQRank` folder in a suitable place.
+* The trained word embeddings on the large unannotated data can be found [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/vectors_unannotated.txt).
 
 ## Running QQRank
 * Running QQRank jar can be done in two sequential steps
@@ -38,10 +38,10 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 * The evaluation scripts used in the system can be looked up [here](http://alt.qcri.org/semeval2017/task3/data/uploads/semeval2017_task3_submissions_and_scores.zip).
 
 ## Contents
-* [Introduction](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/Home.md)
-* [Features](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/Features.md)
-* [File Format](https://github.com/TitasNandi/QQRank/blob/master/src/main/java/doc/file_format.md)
-* [Slides](https://github.com/TitasNandi/QARank/releases/download/1.0/QARank_prezi.pdf)
+* [Introduction](https://github.com/TitasNandi/cQARank/blob/master/QQRank/src/main/java/doc/Home.md)
+* [Features](https://github.com/TitasNandi/cQARank/blob/master/QQRank/src/main/java/doc/Features.md)
+* [File Format](https://github.com/TitasNandi/cQARank/blob/master/QQRank/src/main/java/doc/file_format.md)
+* [Slides](https://github.com/TitasNandi/cQARank/releases/download/1.0/cQARank_prezi.pdf)
 
 
 
