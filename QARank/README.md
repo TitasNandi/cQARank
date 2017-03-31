@@ -4,7 +4,7 @@ QARank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
 # Quick Run
 * Simply download the script `run_QARank.py` from [here](https://github.com/TitasNandi/cQARank/blob/master/QARank/run_QARank.py).
 * Copy the file to a destination having enough space for a few downloads and run the script as `python run_QARank.py`.
-* This runs QARank with some training and test files from the Qatar Living Data. To make your own changes or run on a different dataset follow procedures below.
+* This downloads required data, creates folders and runs QARank with some training and test files from the Qatar Living Data. To make your own changes or run on a different dataset follow procedures below.
 
 # Experimentation
 * Download the jar file of the project from [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/QARank.jar).
