@@ -1,7 +1,12 @@
 # QARank - Answer Selection and Ranking Tool for Community Question Answering sites
 QARank is licensed under ASL 2.0 and other lenient licenses, allowing its use for academic and commercial purposes without restrictions.
 
-## Downloading QARank
+# Quick Run
+* Simply download the script `run_QARank.py` from [here](https://github.com/TitasNandi/cQARank/blob/master/QARank/run_QARank.py).
+* Copy the file to a destination having enough space for a few downloads and run the script as `python run_QARank.py`.
+* This runs QARank with some training and test files from the Qatar Living Data. To make your own changes or run on a different dataset follow procedures below.
+
+# Experimentation
 * Download the jar file of the project from [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/QARank.jar).
 * Alternatively, download the [zip](https://github.com/TitasNandi/QARank/archive/1.0.zip) of the java project and import it as a **maven** project in eclipse for experimentation.
 
@@ -31,6 +36,7 @@ QARank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
    ```
   java -Xmx10g -jar QARank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] 1
   ```
+## Results
 * The system will generate all folders and required files.
 * The final MAP scores of the system and the SVM accuracy can be found in **result_files/final_scores.txt** file.
 * Users can run the system on a different dataset, given the training and test files are in the format as in SemEval 2017 - Task 3.  
