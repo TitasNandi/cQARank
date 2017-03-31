@@ -1,7 +1,12 @@
 # QQRank - Related Question Detection and Ranking Tool for Community Question Answering sites
 QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use for academic and commercial purposes without restrictions.
 
-## Downloading QQRank
+# Quick Run
+* Simply download the script `run_QQRank.py` from [here](https://github.com/TitasNandi/cQARank/blob/master/QQRank/run_QQRank.py).
+* Copy the file to a destination having enough space for a few downloads and run the script as `python run_QQRank.py`.
+* This downloads required data, creates folders and runs QQRank with some training and test files from the Qatar Living Data. To make your own changes, run on a different dataset or run stacking features follow procedures below.
+
+# Experimentation
 * Download the jar file of the project from [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/QQRank.jar).
 * Alternatively, download the [zip](https://github.com/TitasNandi/QQRank/archive/1.0.zip) of the java project and import it as a **maven** project in eclipse for experimentation.
 
@@ -32,6 +37,7 @@ QQRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
      ```
      java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] [absolute-path-to-result_files-QARank] [absolute-path-to-result_files-QCRank]
      ```  
+## Results
 * The system will generate all folders and required files.
 * The final MAP scores of the system and the SVM accuracy can be found in **result_files/final_scores.txt** file.
 * Users can run the system on a different dataset, given the training and test files are in the format as in SemEval 2017 - Task 3.  
