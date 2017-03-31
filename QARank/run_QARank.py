@@ -37,11 +37,11 @@ def create_folders(dir_path):
 
 	if not os.path.exists(dir_path+'/QARank/xml_files'):
 		os.makedirs(dir_path+'/QARank/xml_files')
-	
 	xml_dir = dir_path+'/QARank/xml_files'
-
+	# A particular train file is used. Can be changed to train the system on a different file
 	shutil.copy(train_dir+'/SemEval2016-Task3-CQA-QL-train-part1-subtaskA.xml', xml_dir)
 	os.rename(xml_dir+'/SemEval2016-Task3-CQA-QL-train-part1-subtaskA.xml', xml_dir+'/train.xml')
+	# A particular test file is used. Can be changed to test the system on a different file
 	shutil.copy(test_dir+'/SemEval2016-Task3-CQA-QL-dev-subtaskA.xml', xml_dir)
 	os.rename(xml_dir+'/SemEval2016-Task3-CQA-QL-dev-subtaskA.xml', xml_dir+'/test.xml')
 
