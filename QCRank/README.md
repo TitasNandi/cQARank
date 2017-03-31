@@ -37,7 +37,7 @@ QCRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
      ```
      java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] [absolute-path-to-result_files-QARank] [absolute-path-to-result_files-QQRank] stacking
      ```  
-# Results
+## Results
 * The system will generate all folders and required files.
 * The final MAP scores of the system and the SVM accuracy can be found in **result_files/final_scores.txt** file.
 * Users can run the system on a different dataset, given the training and test files are in the format as in SemEval 2017 - Task 3.  
