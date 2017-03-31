@@ -1,7 +1,13 @@
 # QCRank - External Comment Selection and Ranking Tool for Community Question Answering sites
 QCRank is licensed under ASL 2.0 and other lenient licenses, allowing its use for academic and commercial purposes without restrictions.
 
-## Downloading QCRank
+# Quick Run
+* Simply download the script `run_QCRank.py` from [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/run_QCRank.py).
+* Copy the file to a destination having enough space for a few downloads and run the script as `python run_QCRank.py`.
+* In this case, the script does not run the jar file as it depends on the results of the other toolkits and consistency of data.
+* It downloads required data and creates folders with some training and test files from the Qatar Living Data. To make your own changes and run the jar follow procedures below. 
+
+# Experimentation
 * Download the jar file of the project from [here](https://github.com/TitasNandi/cQARank/releases/download/1.0/QCRank.jar).
 * Alternatively, download the [zip](https://github.com/TitasNandi/QCRank/archive/1.0.zip) of the java project and import it as a **maven** project in eclipse for experimentation.
 
@@ -31,6 +37,7 @@ QCRank is licensed under ASL 2.0 and other lenient licenses, allowing its use fo
      ```
      java -Xmx10g -jar QQRank.jar [absolute-path-to-xml_files-folder] [absolute-path-to-resources-folder] [absolute-path-to-result_files-QARank] [absolute-path-to-result_files-QQRank] stacking
      ```  
+# Results
 * The system will generate all folders and required files.
 * The final MAP scores of the system and the SVM accuracy can be found in **result_files/final_scores.txt** file.
 * Users can run the system on a different dataset, given the training and test files are in the format as in SemEval 2017 - Task 3.  
